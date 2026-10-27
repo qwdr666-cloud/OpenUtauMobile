@@ -1,0 +1,73 @@
+name: OpenUtau Touch ARM64 from patch
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: qwdr666-cloud/OpenUtauMobile
+          ref: 17a86f602e054c345841684224903004eff1f536
+          persist-credentials: false
+      - name: Apply Touch source changes
+        run: |
+          python - <<'PYTHON'
+          import base64, zlib
+          from pathlib import Path
+          Path('/tmp/touch.patch').write_bytes(zlib.decompress(base64.b64decode('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')))
+          PYTHON
+          git apply --check /tmp/touch.patch
+          git apply /tmp/touch.patch
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Build signed standalone ARM64 APK
+        run: >-
+          dotnet publish OpenUtauMobile/OpenUtauMobile.csproj
+          -f net9.0-android -c Release
+          -p:TargetFrameworks=net9.0-android
+          -p:RuntimeIdentifier=android-arm64
+          -p:RuntimeIdentifiers=android-arm64
+          -p:AndroidCreatePackagePerAbi=false
+          -p:AndroidPackageFormats=apk
+          -p:AndroidKeyStore=false
+          -p:RunAOTCompilation=false
+          -p:EmbedAssembliesIntoApk=true
+          -bl:touch-build.binlog
+      - name: Verify package and signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=$(find OpenUtauMobile/bin/Release -name '*-Signed.apk' -print -quit)
+          test -n "$APK"
+          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK" | tee signature.txt
+          "$BUILD_TOOLS/aapt" dump badging "$APK" | tee package.txt
+          grep -q "package: name='pers.vocoder712.openutaumobile.touchmarquee'" package.txt
+          grep -q "application-label:'OpenUtau Touch'" package.txt
+          grep -q "native-code:.*'arm64-v8a'" package.txt
+          mkdir -p artifacts
+          cp "$APK" artifacts/OpenUtau-Touch-1.1.7-arm64.apk
+          cp signature.txt package.txt artifacts/
+          sha256sum artifacts/*.apk > artifacts/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenUtau-Touch-1.1.7-arm64
+          path: artifacts/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: touch-build-diagnostics
+          path: touch-build.binlog
