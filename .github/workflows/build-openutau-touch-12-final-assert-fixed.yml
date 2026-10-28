@@ -1,0 +1,2014 @@
+name: OpenUtau Touch 12 - assert correction (rendering patch)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: qwdr666-cloud/OpenUtauMobile
+          ref: 17a86f602e054c345841684224903004eff1f536
+          persist-credentials: false
+      - name: Apply Touch source changes
+        run: |
+          python - <<'PYTHON'
+          import base64, zlib
+          from pathlib import Path
+          Path('/tmp/touch.patch').write_bytes(zlib.decompress(base64.b64decode('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')))
+          PYTHON
+          git apply --check /tmp/touch.patch
+          git apply /tmp/touch.patch
+      # Android requires unique ContentProvider authorities across all installed apps.
+      # Original 1.1.7 hard-codes a DocumentsProvider authority independent of ApplicationId.
+      - name: Isolate OpenUtau Touch documents provider
+        shell: bash
+        run: |
+          python - <<'PYPROVIDER'
+          from pathlib import Path
+          path = Path('OpenUtauMobile/Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs')
+          text = path.read_text(encoding='utf-8-sig')
+          old = '["pers.vocoder712.openutaumobile.documents"]'
+          new = '["pers.vocoder712.openutaumobile.touchmarquee.documents"]'
+          if text.count(old) != 1:
+              raise SystemExit('Expected exactly one original DocumentsProvider authority')
+          text = text.replace(old, new)
+          text = text.replace('ColumnTitle, "OpenUtau Mobile"', 'ColumnTitle, "OpenUtau Touch"')
+          path.write_text(text, encoding='utf-8')
+          print('Isolated DocumentsProvider authority:', new)
+          PYPROVIDER
+      - name: Upgrade to Touch 2 gestures and independent app identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYUPGRADE'
+          import base64, zlib
+          from pathlib import Path
+          Path('/tmp/touch2.patch').write_bytes(zlib.decompress(base64.b64decode('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')))
+          PYUPGRADE
+          git apply --check /tmp/touch2.patch
+          git apply /tmp/touch2.patch
+          python - <<'PYFINAL'
+          from pathlib import Path
+
+          # GitHub-hosted builds use temporary signing keys. Use a new package ID so
+          # Touch 2 installs beside the existing Touch 1 and official OpenUtau Mobile.
+          csproj = Path('OpenUtauMobile/OpenUtauMobile.csproj')
+          c = csproj.read_text(encoding='utf-8-sig')
+          old = '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee</ApplicationId>'
+          assert c.count(old) == 1, 'Touch 1 package ID not found'
+          c = c.replace(old, '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v2</ApplicationId>')
+          assert c.count('<ApplicationTitle>OpenUtau Touch</ApplicationTitle>') == 1
+          c = c.replace('<ApplicationTitle>OpenUtau Touch</ApplicationTitle>', '<ApplicationTitle>OpenUtau Touch 2</ApplicationTitle>')
+          assert c.count('<ApplicationDisplayVersion>1.1.7</ApplicationDisplayVersion>') == 1
+          c = c.replace('<ApplicationDisplayVersion>1.1.7</ApplicationDisplayVersion>', '<ApplicationDisplayVersion>1.1.8</ApplicationDisplayVersion>')
+          assert c.count('<ApplicationVersion>16</ApplicationVersion>') == 1
+          c = c.replace('<ApplicationVersion>16</ApplicationVersion>', '<ApplicationVersion>17</ApplicationVersion>')
+          csproj.write_text(c, encoding='utf-8')
+
+          manifest = Path('OpenUtauMobile/Platforms/Android/AndroidManifest.xml')
+          m = manifest.read_text(encoding='utf-8-sig')
+          assert m.count('android:label="OpenUtau Touch"') == 1
+          manifest.write_text(m.replace('android:label="OpenUtau Touch"', 'android:label="OpenUtau Touch 2"'), encoding='utf-8')
+
+          provider = Path('OpenUtauMobile/Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs')
+          p = provider.read_text(encoding='utf-8-sig')
+          old_authority = 'pers.vocoder712.openutaumobile.touchmarquee.documents'
+          assert p.count(old_authority) == 1, 'Touch 1 provider authority not found'
+          p = p.replace(old_authority, 'pers.vocoder712.openutaumobile.touchmarquee.v2.documents')
+          p = p.replace('ColumnTitle, "OpenUtau Touch"', 'ColumnTitle, "OpenUtau Touch 2"')
+          provider.write_text(p, encoding='utf-8')
+
+          # Brighten selected notes *after* painting the notes themselves.
+          # The original border was drawn before the opaque note body, hiding it.
+          draw = Path('OpenUtauMobile/Views/DrawableObjects/DrawableNotes.cs')
+          d = draw.read_text(encoding='utf-8-sig')
+          match = '            foreach (UNote note in Part.notes)'
+          assert d.count(match) >= 2, 'Note rendering loop not found'
+          glows = '            using SKPaint selectedLightFill = new()\n            {\n                Color = new SKColor(249, 254, 255, 112),\n                Style = SKPaintStyle.Fill,\n                IsAntialias = true,\n            };\n            using SKPaint selectedOuterGlow = new()\n            {\n                Color = new SKColor(91, 222, 255, 143),\n                Style = SKPaintStyle.Stroke,\n                StrokeWidth = 8f * (float)ViewModel.Density,\n                IsAntialias = true,\n            };\n            using SKPaint selectedBrightOutline = new()\n            {\n                Color = new SKColor(249, 253, 255, 255),\n                Style = SKPaintStyle.Stroke,\n                StrokeWidth = 2.5f * (float)ViewModel.Density,\n                IsAntialias = true,\n            };\n'
+          d = d.replace(match, glows + match, 1)
+          fill_marker = 'HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY, paint);'
+          assert d.count(fill_marker) == 1, 'Note body drawing call not found'
+          enhanced = '\n                // Draw selected-note light last so the opaque body cannot cover it.\n                if (ViewModel.SelectedNotes.Contains(note))\n                {\n                    float x = (PositionX + note.position) * ViewModel.PianoRollTransformer.ZoomX + ViewModel.PianoRollTransformer.PanX;\n                    float y = (ViewConstants.TotalPianoKeys - note.tone - 1) * HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY + ViewModel.PianoRollTransformer.PanY;\n                    float w = note.duration * ViewModel.PianoRollTransformer.ZoomX;\n                    float h = HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY;\n                    Canvas.DrawRect(x, y, w, h, selectedLightFill);\n                    Canvas.DrawRect(x, y, w, h, selectedOuterGlow);\n                    Canvas.DrawRect(x, y, w, h, selectedBrightOutline);\n                }\n'
+          d = d.replace(fill_marker, fill_marker + enhanced, 1)
+          draw.write_text(d, encoding='utf-8')
+          print('Touch 2: long-press marquee, edge scroll, selected-note glow, standalone identity')
+          PYFINAL
+      - name: Add kinetic scrolling, independent draggable piano-roll playhead
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYFEATURE'
+          import base64,zlib
+          from pathlib import Path
+          Path('/tmp/touch3-feature.patch').write_bytes(zlib.decompress(base64.b64decode('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')))
+          PYFEATURE
+          git apply --check /tmp/touch3-feature.patch
+          git apply /tmp/touch3-feature.patch
+          python - <<'PYIDENTITY'
+          from pathlib import Path
+          def swap_one(path, old, new):
+              file = Path(path)
+              content = file.read_text(encoding='utf-8-sig')
+              if content.count(old) != 1:
+                  raise RuntimeError(f'{file}: expected one match for {old!r}, got {content.count(old)}')
+              file.write_text(content.replace(old,new),encoding='utf-8')
+
+          # New package & DocumentsProvider authority: avoid collisions and
+          # signature-update errors with the official, Touch 1 and Touch 2 apps.
+          csproj='OpenUtauMobile/OpenUtauMobile.csproj'
+          swap_one(csproj,'<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v2</ApplicationId>',
+                     '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v3</ApplicationId>')
+          swap_one(csproj,'<ApplicationTitle>OpenUtau Touch 2</ApplicationTitle>',
+                     '<ApplicationTitle>OpenUtau Touch 3</ApplicationTitle>')
+          swap_one(csproj,'<ApplicationDisplayVersion>1.1.8</ApplicationDisplayVersion>',
+                     '<ApplicationDisplayVersion>1.1.9</ApplicationDisplayVersion>')
+          swap_one(csproj,'<ApplicationVersion>17</ApplicationVersion>',
+                     '<ApplicationVersion>18</ApplicationVersion>')
+          swap_one('OpenUtauMobile/Platforms/Android/AndroidManifest.xml',
+                     'android:label="OpenUtau Touch 2"','android:label="OpenUtau Touch 3"')
+          provider='OpenUtauMobile/Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs'
+          swap_one(provider, 'pers.vocoder712.openutaumobile.touchmarquee.v2.documents',
+                     'pers.vocoder712.openutaumobile.touchmarquee.v3.documents')
+          swap_one(provider, 'ColumnTitle, "OpenUtau Touch 2"', 'ColumnTitle, "OpenUtau Touch 3"')
+
+          # Overlay remains transparent to touch, so the existing note gesture
+          # handler receives taps and can perform playhead hit-testing.
+          xaml='OpenUtauMobile/Views/EditPage.xaml'
+          match='<skia:SKCanvasView x:Name="PianoRollPitchCanvas" Grid.Column="1" PaintSurface="PianoRollPitchCanvas_PaintSurface"/>'
+          extra='<skia:SKCanvasView x:Name="PianoRollPlayheadCanvas" Grid.Column="1" InputTransparent="True" PaintSurface="PianoRollPlayheadCanvas_PaintSurface"/>'
+          swap_one(xaml, match, match+'\n                         '+extra)
+          # Old implementation paints a permanent cursor line at a fixed X.
+          # Remove it: the new overlay paints the cursor at actual play time.
+          draw='OpenUtauMobile/Views/DrawableObjects/DrawablePianoRollTickBackground.cs'
+          swap_one(draw, 'float posX = (float)DeviceDisplay.Current.MainDisplayInfo.Density * ViewConstants.PianoRollPlaybackLinePos;\n            Canvas.DrawLine(new SKPoint(posX, 0), new SKPoint(posX, bottom + 0.5f), ThemeColorsManager.Current.PianoRollPlaybackPosLinePaint);',
+                         '// Cursor is drawn on PianoRollPlayheadCanvas at PlayPosTick.')
+          print('Touch 3: kinetic scrolling, movable seek line, standalone application identity')
+          PYIDENTITY
+      - name: Fix Touch 3 SkiaSharp touch action namespace
+        shell: bash
+        run: |
+          python - <<'PYFIX'
+          from pathlib import Path
+          file = Path('OpenUtauMobile/Views/EditPage.xaml.cs')
+          source = file.read_text(encoding='utf-8-sig')
+          required = 'using SkiaSharp.Views.Maui;'
+          if required not in source:
+              anchor = 'using SkiaSharp;'
+              if source.count(anchor) != 1:
+                  raise SystemExit('Could not locate SkiaSharp import in EditPage.xaml.cs')
+              source = source.replace(anchor, anchor + '\n' + required, 1)
+              file.write_text(source, encoding='utf-8')
+          assert 'using SkiaSharp.Views.Maui;' in source
+          assert source.count('SKTouchAction.') >= 9
+          print('Added SkiaSharp.Views.Maui namespace used by SKTouchAction enum')
+          PYFIX
+      - name: Add playhead follow toggle, black playhead, marquee without button
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH4'
+          from pathlib import Path
+          
+          ROOT=Path('OpenUtauMobile')
+          
+          def swap_one(file, old, new):
+              path=ROOT/file
+              s=path.read_text(encoding='utf-8-sig')
+              count=s.count(old)
+              if count!=1:
+                  raise RuntimeError(f'{path}: expected exactly one occurrence, got {count}, for {old[:160]!r}')
+              path.write_text(s.replace(old,new),encoding='utf-8')
+          
+          def change(file, action):
+              path=ROOT/file
+              source=path.read_text(encoding='utf-8-sig')
+              output=action(source)
+              if output==source: raise RuntimeError(f'No change applied to {path}')
+              path.write_text(output,encoding='utf-8')
+          
+          # Add separately installable Touch 4 identity.
+          swap_one('OpenUtauMobile.csproj',
+                   '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v3</ApplicationId>',
+                   '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v4</ApplicationId>')
+          swap_one('OpenUtauMobile.csproj','<ApplicationTitle>OpenUtau Touch 3</ApplicationTitle>',
+                   '<ApplicationTitle>OpenUtau Touch 4</ApplicationTitle>')
+          swap_one('OpenUtauMobile.csproj','<ApplicationDisplayVersion>1.1.9</ApplicationDisplayVersion>',
+                   '<ApplicationDisplayVersion>1.1.10</ApplicationDisplayVersion>')
+          swap_one('OpenUtauMobile.csproj','<ApplicationVersion>18</ApplicationVersion>',
+                   '<ApplicationVersion>19</ApplicationVersion>')
+          swap_one('Platforms/Android/AndroidManifest.xml','android:label="OpenUtau Touch 3"',
+                   'android:label="OpenUtau Touch 4"')
+          swap_one('Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',
+                   'pers.vocoder712.openutaumobile.touchmarquee.v3.documents',
+                   'pers.vocoder712.openutaumobile.touchmarquee.v4.documents')
+          swap_one('Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',
+                   'ColumnTitle, "OpenUtau Touch 3"', 'ColumnTitle, "OpenUtau Touch 4"')
+          
+          # Replace the central pitch-anchor button in the four-button note editing toolbar.
+          # It remains a Button with the exact original styling and dimensions.
+          swap_one('Views/EditPage.xaml',
+                   '<Button ImageSource="{DynamicResource anchor}" WidthRequest="25" Grid.Column="3" x:Name="ButtonSwitchEditPitchAnchorMode" Style="{StaticResource NoteEditModeButtonStyle}" Clicked="ButtonSwitchNoteMode_Clicked" Padding="12"/>',
+                   '<Button ImageSource="followplayhead.png" WidthRequest="25" Grid.Column="3" x:Name="ButtonFollowPlayhead" Style="{StaticResource NoteEditModeButtonStyle}" Clicked="ButtonFollowPlayhead_Clicked" Padding="12" SemanticProperties.Description="播放时跟随指针（点击开关）" />')
+          
+          # .NET MAUI processes the SVG icon into PNG at build time using MauiImage.
+          icon=ROOT/'Resources/Images/followplayhead.svg'
+          icon.parent.mkdir(parents=True,exist_ok=True)
+          icon.write_text('''<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <g fill="none" stroke="#181818" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M12 3V21"/>
+              <path d="M3 8V16M21 8V16"/>
+              <path d="M5.5 12H9.5M14.5 12H18.5"/>
+              <path d="m7.5 10 2 2-2 2M16.5 10l-2 2 2 2"/>
+            </g>
+          </svg>''',encoding='utf-8')
+          
+          # Follow is a standalone toggle, not a pitch-edit mode. Keep default on to
+          # preserve Touch 3's behavior until the user presses the button.
+          swap_one('Views/EditPage.xaml.cs',
+                   '    private bool _pianoPlayheadDragging;',
+                   '    private bool _followPianoPlayhead = true;\n    private bool _pianoPlayheadDragging;')
+          swap_one('Views/EditPage.xaml.cs',
+                   'ButtonSwitchEditPitchAnchorMode.BackgroundColor = mode == EditViewModel.NoteEditMode.EditPitchAnchor ? activeColor : Colors.Transparent;',
+                   'ButtonFollowPlayhead.BackgroundColor = _followPianoPlayhead ? activeColor : Colors.Transparent;')
+          swap_one('Views/EditPage.xaml.cs',
+                   'if (_viewModel.Playing && !_pianoPlayheadDragging)',
+                   'if (_followPianoPlayhead && _viewModel.Playing && !_pianoPlayheadDragging)')
+          
+          # Replace old pitch anchor handler branch and add a function to update active style.
+          swap_one('Views/EditPage.xaml.cs',
+                   '''        else if (sender == ButtonSwitchEditPitchAnchorMode)
+                  {
+                      _viewModel.CurrentNoteEditMode = EditViewModel.NoteEditMode.EditPitchAnchor;
+                  }
+          ''', '')
+          swap_one('Views/EditPage.xaml.cs',
+                   '    private void ButtonSwitchNoteMode_Clicked(object sender, EventArgs e)',
+                   '''    private void ButtonFollowPlayhead_Clicked(object sender, EventArgs e)
+              {
+                  _followPianoPlayhead = !_followPianoPlayhead;
+                  SKColorMauiColorConverter converter = new();
+                  Color? activeColor = converter.Convert(
+                      ThemeColorsManager.Current.ActiveNoteEditModeButton,
+                      typeof(Color), null, null!) as Color;
+                  ButtonFollowPlayhead.BackgroundColor = _followPianoPlayhead
+                      ? activeColor : Colors.Transparent;
+                  // The current play position and scroll state remain untouched.
+                  // On the next playback tick, enabled follow resumes automatically.
+              }
+          
+              private void ButtonSwitchNoteMode_Clicked(object sender, EventArgs e)''')
+          
+          # Playhead: fully black line with a small vertical rectangle at top.
+          # Using rect (not a triangle) also increases the visible grab-target clarity.
+          swap_one('Views/EditPage.xaml.cs',
+                   'Color = new SKColor(179, 243, 83, 195), StrokeWidth = 2f * density,',
+                   'Color = SKColors.Black, StrokeWidth = 2f * density,')
+          swap_one('Views/EditPage.xaml.cs',
+                   'Color = new SKColor(179, 243, 83, 255),',
+                   'Color = SKColors.Black,')
+          swap_one('Views/EditPage.xaml.cs',
+                   '''        using var shape = new SKPath();
+                  shape.MoveTo(x - 11 * density, 0);
+                  shape.LineTo(x + 11 * density, 0);
+                  shape.LineTo(x, 17 * density);
+                  shape.Close();
+                  canvas.DrawPath(shape, handle);''',
+                   '''        // Small upright rectangular grip; keep the cursor centered.
+                  canvas.DrawRoundRect(new SKRect(x - 5f * density, 0,
+                      x + 5f * density, 18f * density), 1.5f * density,
+                      1.5f * density, handle);''')
+          
+          # Long-press empty piano roll for 500ms then move = marquee in BOTH single
+          # and multi selection modes. Ordinary swipes and note drags stay unchanged.
+          swap_one('Views/EditPage.xaml.cs',
+                   '''            _viewModel.CurrentSelectMode == EditViewModel.SelectionMode.Multi &&
+                      _viewModel.CurrentNoteEditMode == EditViewModel.NoteEditMode.EditNote &&''',
+                   '''            _viewModel.CurrentNoteEditMode == EditViewModel.NoteEditMode.EditNote &&''')
+          swap_one('Views/EditPage.xaml.cs',
+                   '''                    if (_viewModel.CurrentSelectMode == EditViewModel.SelectionMode.Multi &&
+                                  _viewModel.EditingNotes != null && _viewModel.EditingPart != null)''',
+                   '''                    if (_viewModel.EditingNotes != null && _viewModel.EditingPart != null)''')
+          swap_one('Views/EditPage.xaml.cs',
+                   '''        if (!_marqueeActive || _viewModel.CurrentSelectMode != EditViewModel.SelectionMode.Multi)
+          ''',
+                   '''        if (!_marqueeActive || _viewModel.CurrentNoteEditMode != EditViewModel.NoteEditMode.EditNote)
+          ''')
+          
+          # Verify no obsolete toolbar button name remains.
+          s=(ROOT/'Views/EditPage.xaml.cs').read_text(encoding='utf-8')
+          x=(ROOT/'Views/EditPage.xaml').read_text(encoding='utf-8')
+          assert 'ButtonSwitchEditPitchAnchorMode' not in (s+x)
+          assert 'ButtonFollowPlayhead_Clicked' in s and 'ButtonFollowPlayhead' in x
+          assert 'if (_followPianoPlayhead && _viewModel.Playing' in s
+          assert 'if (_viewModel.EditingNotes != null && _viewModel.EditingPart != null)' in s
+          assert 'canvas.DrawRoundRect(new SKRect(x - 5f' in s
+          assert icon.exists()
+          print('Touch 4 customization applied and validated')
+          PYTOUCH4
+      - name: Touch 5 transparent toolbars, compact piano keys and grey playhead
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH5'
+          from pathlib import Path
+          import re
+          
+          ROOT = Path('OpenUtauMobile')
+          
+          def edit(relative, fn):
+              path = ROOT / relative
+              source = path.read_text(encoding='utf-8-sig')
+              output = fn(source)
+              if output == source:
+                  raise RuntimeError(f'Nothing changed: {path}')
+              path.write_text(output, encoding='utf-8')
+          
+          def once(source, old, new, desc):
+              n = source.count(old)
+              if n != 1:
+                  raise RuntimeError(f'{desc}: wanted exactly one match, got {n}: {old[:110]!r}')
+              return source.replace(old, new, 1)
+          
+          # Touch 5 has its own Android identity so it can coexist with Touch 1..4.
+          def identity(s):
+              for old,new in [
+                  ('<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v4</ApplicationId>',
+                   '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v5</ApplicationId>'),
+                  ('<ApplicationTitle>OpenUtau Touch 4</ApplicationTitle>',
+                   '<ApplicationTitle>OpenUtau Touch 5</ApplicationTitle>'),
+                  ('<ApplicationDisplayVersion>1.1.10</ApplicationDisplayVersion>',
+                   '<ApplicationDisplayVersion>1.1.11</ApplicationDisplayVersion>'),
+                  ('<ApplicationVersion>19</ApplicationVersion>', '<ApplicationVersion>20</ApplicationVersion>'),
+              ]:
+                  s=once(s,old,new,'Touch 5 identity')
+              return s
+          edit('OpenUtauMobile.csproj',identity)
+          edit('Platforms/Android/AndroidManifest.xml',lambda s: once(s,'android:label="OpenUtau Touch 4"','android:label="OpenUtau Touch 5"','manifest label'))
+          def provider(s):
+              s=once(s,'pers.vocoder712.openutaumobile.touchmarquee.v4.documents',
+                  'pers.vocoder712.openutaumobile.touchmarquee.v5.documents','provider authority')
+              return once(s,'ColumnTitle, "OpenUtau Touch 4"','ColumnTitle, "OpenUtau Touch 5"','provider title')
+          edit('Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs', provider)
+          
+          # One visual group per row: hide *both* floating tools and their backgrounds.
+          # Parent opacity applies to the pink background and black icons alike, and
+          # parent IsVisible blocks touch events when the overlay is hidden.
+          def xaml(s):
+              # Match by distinctive row definitions, rather than whitespace-sensitive XML.
+              s,n = re.subn(
+                  r'<Grid(?=\s+AbsoluteLayout\.LayoutBounds="1,0,AutoSize,AutoSize")(?=[^>]*RowDefinitions="40,40,40")',
+                  '<Grid x:Name="Touch5TrackOverlay" Opacity="0.56"', s, count=1)
+              if n != 1: raise RuntimeError('Track floating toolbar was not found')
+              s,n = re.subn(
+                  r'<Grid(?=\s+AbsoluteLayout\.LayoutBounds="1,0,AutoSize,AutoSize")(?=[^>]*RowDefinitions="Auto, Auto")',
+                  '<Grid x:Name="Touch5PianoOverlay" Opacity="0.56"', s, count=1)
+              if n != 1: raise RuntimeError('Piano floating toolbar was not found')
+              s=once(s,
+                  '<Button ImageSource="{DynamicResource sine}" WidthRequest="25" Grid.Column="4" x:Name="ButtonSwitchEditVibratoMode" Style="{StaticResource NoteEditModeButtonStyle}" Clicked="ButtonSwitchNoteMode_Clicked" Padding="12" />',
+                  '<Button ImageSource="touch5_eye_off.png" WidthRequest="25" Grid.Column="4" x:Name="ButtonToggleFloatingTools" Style="{StaticResource NoteEditModeButtonStyle}" Clicked="ButtonToggleFloatingTools_Clicked" Padding="12" SemanticProperties.Description="隐藏或显示右侧悬浮工具按钮" />',
+                  'fourth toolbar button')
+              # Maintain alignment of the piano keyboard, pitch expression strip and drag handles.
+              for old,new,desc in [
+                  ('<Grid x:Name="GridPianoRoll" ColumnDefinitions="60, *"',
+                   '<Grid x:Name="GridPianoRoll" ColumnDefinitions="30, *"','piano key column'),
+                  ('<Grid ColumnDefinitions="60,*" Padding="0" >',
+                   '<Grid ColumnDefinitions="30,*" Padding="0" >','divider key column'),
+                  ('<Grid x:Name="BorderExtend" ColumnDefinitions="60,*"',
+                   '<Grid x:Name="BorderExtend" ColumnDefinitions="30,*"','expression key column'),
+                  ('<Grid ColumnDefinitions="60,8,*,Auto,100" Padding="0" >',
+                   '<Grid ColumnDefinitions="30,8,*,Auto,100" Padding="0" >','expression toolbar key column'),
+              ]:
+                  s=once(s,old,new,desc)
+              return s
+          edit('Views/EditPage.xaml', xaml)
+          
+          icons={
+           'touch5_eye_off.svg':'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><g fill="none" stroke="#181818" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A11.3 11.3 0 0 1 12 5c5.2 0 8.9 4.2 10 7-.5 1.4-1.6 3-3 4.2"/><path d="M6.7 6.7C4.1 8.2 2.5 10.5 2 12c1.1 2.8 4.8 7 10 7 1.2 0 2.3-.2 3.3-.5"/><path d="M10 10a3 3 0 0 0 4 4"/></g></svg>''',
+           'touch5_eye_on.svg':'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><g fill="none" stroke="#181818" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></svg>'''
+          }
+          for name,body in icons.items():
+              icon=ROOT/'Resources'/'Images'/name
+              icon.parent.mkdir(parents=True,exist_ok=True)
+              icon.write_text(body,encoding='utf-8')
+          
+          # The fourth note toolbar control is now a real visibility toggle, not
+          # an editing mode; its icon indicates the action available on the next tap.
+          def csharp(s):
+              s=once(s,
+                  'ButtonSwitchEditVibratoMode.BackgroundColor = mode == EditViewModel.NoteEditMode.EditVibrato ? activeColor : Colors.Transparent;',
+                  'ButtonToggleFloatingTools.BackgroundColor = Colors.Transparent;',
+                  'toolbar state update')
+              pattern=r'\s*else if \(sender == ButtonSwitchEditVibratoMode\)\s*\{\s*_viewModel\.CurrentNoteEditMode = EditViewModel\.NoteEditMode\.EditVibrato;\s*\}'
+              s,n=re.subn(pattern,'\n        ',s,count=1)
+              if n!=1: raise RuntimeError('Cannot locate the original vibrato button handler')
+              handler='''    private bool _touch5SideToolsVisible = true;
+          
+              private void ButtonToggleFloatingTools_Clicked(object sender, EventArgs e)
+              {
+                  _touch5SideToolsVisible = !_touch5SideToolsVisible;
+                  Touch5TrackOverlay.IsVisible = _touch5SideToolsVisible;
+                  Touch5PianoOverlay.IsVisible = _touch5SideToolsVisible;
+                  ButtonToggleFloatingTools.ImageSource = _touch5SideToolsVisible
+                      ? "touch5_eye_off.png" : "touch5_eye_on.png";
+              }
+          
+          '''
+              s=once(s,'    private void ButtonSwitchNoteMode_Clicked(object sender, EventArgs e)',
+                  handler+'    private void ButtonSwitchNoteMode_Clicked(object sender, EventArgs e)',
+                  'floating tool visibility callback')
+              # Touch 4's dark-black playhead had separate line/handle colors.
+              s=once(s,'Color = SKColors.Black, StrokeWidth = 2f * density,',
+                  'Color = new SKColor(60, 60, 64, 172), StrokeWidth = 2f * density,',
+                  'semi-transparent warm grey playhead line')
+              s=once(s,'Color = SKColors.Black,\n            Style = SKPaintStyle.Fill, IsAntialias = true',
+                  'Color = new SKColor(60, 60, 64, 205),\n            Style = SKPaintStyle.Fill, IsAntialias = true',
+                  'semi-transparent warm grey playhead handle')
+              # Keep C# mode enum intact for saved project compatibility; only the
+              # now-removed toolbar entry is changed.
+              original='''            Canvas.DrawText(drawingKey.NoteName, 5, y, font, textPaint);
+                      if (numberedNotationIndex >= 0 && numberedNotationIndex <= 11)
+                      {
+                          Canvas.DrawText(MusicMath.NumberedNotations[numberedNotationIndex], 50 * (float)_viewModel.Density, y, font, textPaint);
+                      }'''
+              revised='''            // Touch 5: narrow piano-key column, pitch label above its
+                      // numbered-notation degree. Scale-to-fit so C#5 also fits.
+                      float keyRowHeight = heightPerPianoKey * _viewModel.PianoRollTransformer.ZoomY;
+                      font.Size = Math.Max(8f, Math.Min(keyRowHeight * 0.34f, width * 0.39f));
+                      string keyName = drawingKey.NoteName;
+                      float nameX = Math.Max(1f, (width - font.MeasureText(keyName)) * 0.5f);
+                      Canvas.DrawText(keyName, nameX, y - keyRowHeight * 0.09f, font, textPaint);
+                      if (numberedNotationIndex >= 0 && numberedNotationIndex <= 11)
+                      {
+                          string degree = MusicMath.NumberedNotations[numberedNotationIndex];
+                          font.Size = Math.Max(7f, Math.Min(keyRowHeight * 0.22f, width * 0.30f));
+                          float degreeX = Math.Max(1f, (width - font.MeasureText(degree)) * 0.5f);
+                          Canvas.DrawText(degree, degreeX, y + keyRowHeight * 0.28f, font, textPaint);
+                      }'''
+              s=once(s,original,revised,'draw pitch name above numbered key degree')
+              if 'ButtonSwitchEditVibratoMode' in s:
+                  raise RuntimeError('obsolete vibrato control reference survived in code behind')
+              return s
+          edit('Views/EditPage.xaml.cs',csharp)
+          
+          # Verify all expected components, no stale widget names and unique app identity.
+          x=(ROOT/'Views/EditPage.xaml').read_text(encoding='utf-8')
+          c=(ROOT/'Views/EditPage.xaml.cs').read_text(encoding='utf-8')
+          p=(ROOT/'OpenUtauMobile.csproj').read_text(encoding='utf-8')
+          assert 'Touch5TrackOverlay' in x and 'Touch5PianoOverlay' in x
+          assert 'Opacity="0.56"' in x
+          assert 'ButtonToggleFloatingTools_Clicked' in x and c
+          assert 'font.MeasureText(degree)' in c
+          assert 'ButtonSwitchEditVibratoMode' not in x+c
+          assert '.touchmarquee.v5' in p
+          assert all((ROOT/'Resources/Images'/name).exists() for name in icons)
+          print('Touch 5 UI patch successfully applied with all static assertions')
+          PYTOUCH5
+      - name: Touch 6 - restore original handles, repair expression panel, improve labels
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH6'
+          from pathlib import Path
+          import re
+
+          root = Path('OpenUtauMobile')
+          def modify(relative, fn):
+              file = root / relative
+              previous = file.read_text(encoding='utf-8-sig')
+              updated = fn(previous)
+              if updated == previous:
+                  raise RuntimeError(f'No modifications made to {file}')
+              file.write_text(updated, encoding='utf-8')
+
+          def swap(source, before, after, desc, count=1):
+              occurrences = source.count(before)
+              if occurrences != count:
+                  raise RuntimeError(f'{desc}: expected {count} occurrences, found {occurrences}')
+              return source.replace(before, after)
+
+          # Give this release a distinct package/provider: previous versions coexist.
+          def update_identity(s):
+              for old, new in (
+                  ('<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v5</ApplicationId>',
+                   '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v6</ApplicationId>'),
+                  ('<ApplicationTitle>OpenUtau Touch 5</ApplicationTitle>',
+                   '<ApplicationTitle>OpenUtau Touch 6</ApplicationTitle>'),
+                  ('<ApplicationDisplayVersion>1.1.11</ApplicationDisplayVersion>',
+                   '<ApplicationDisplayVersion>1.1.12</ApplicationDisplayVersion>'),
+                  ('<ApplicationVersion>20</ApplicationVersion>',
+                   '<ApplicationVersion>21</ApplicationVersion>'),
+              ):
+                  s = swap(s,old,new,'Touch 6 app identity')
+              return s
+          modify('OpenUtauMobile.csproj',update_identity)
+          modify('Platforms/Android/AndroidManifest.xml',lambda s: swap(
+              s,'android:label="OpenUtau Touch 5"','android:label="OpenUtau Touch 6"',
+              'Touch 6 Android manifest'))
+          def update_provider(s):
+              s=swap(s,'pers.vocoder712.openutaumobile.touchmarquee.v5.documents',
+                  'pers.vocoder712.openutaumobile.touchmarquee.v6.documents',
+                  'Touch 6 DocumentsProvider authority')
+              return swap(s,'ColumnTitle, "OpenUtau Touch 5"',
+                  'ColumnTitle, "OpenUtau Touch 6"','Touch 6 DocumentsProvider title')
+          modify('Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',update_provider)
+
+          def fix_layout(s):
+              # Keep the actual piano keyboard at 30 dp. The adjacent UI elements
+              # were incorrectly shrunk by Touch 5 and must stay at their original 60 dp.
+              s=swap(s,'<Grid ColumnDefinitions="30,*" Padding="0" >',
+                  '<Grid ColumnDefinitions="60,*" Padding="0" >',
+                  'original-size piano divider handle')
+              s=swap(s,'<Grid x:Name="BorderExtend" ColumnDefinitions="30,*"',
+                  '<Grid x:Name="BorderExtend" ColumnDefinitions="60,*"',
+                  'full-size expression left panel')
+              s=swap(s,'<Grid ColumnDefinitions="30,8,*,Auto,100" Padding="0" >',
+                  '<Grid ColumnDefinitions="60,8,*,Auto,100" Padding="0" >',
+                  'original-size expression toolbar drag handle')
+              # Four floating pink buttons (two groups), both background and icon.
+              s=swap(s,'Opacity="0.56"','Opacity="0.75"',
+                  '75% opacity of both floating tool groups',count=2)
+              # Keep controls readable in the restored 60-dp-wide parameter panel.
+              for name in ('ButtonExchangeExp', 'ButtonSwitchExpressionHandMode',
+                           'ButtonSwitchExpressionEditMode', 'ButtonSwitchExpressionEraserMode'):
+                  pattern = r'(<Button\b(?=[^>]*\bx:Name="' + re.escape(name) + r'")[^>]*)(/>)'
+                  def adjust(m):
+                      body=m.group(1)
+                      if 'FontSize=' in body:
+                          raise RuntimeError('Unexpected existing font size on ' + name)
+                      body += ' FontSize="13"'
+                      if 'LineBreakMode=' not in body:
+                          body += ' LineBreakMode="CharacterWrap"'
+                      return body + m.group(2)
+                  s,n=re.subn(pattern,adjust,s,count=1)
+                  if n!=1: raise RuntimeError(f'Cannot locate parameter button {name}')
+              if '<Grid x:Name="GridPianoRoll" ColumnDefinitions="30, *"' not in s:
+                  raise RuntimeError('Piano keyboard must remain at 30 dp')
+              return s
+          modify('Views/EditPage.xaml',fix_layout)
+
+          def fix_key_label(s):
+              # Allow slight visual overlap with the lower numbered-notation degree.
+              s=swap(s,
+                  'font.Size = Math.Max(8f, Math.Min(keyRowHeight * 0.34f, width * 0.39f));',
+                  'font.Size = Math.Max(10f, Math.Min(keyRowHeight * 0.48f, width * 0.58f));',
+                  'make pitch names considerably larger')
+              return s
+          modify('Views/EditPage.xaml.cs',fix_key_label)
+
+          x = (root/'Views/EditPage.xaml').read_text(encoding='utf-8')
+          c = (root/'Views/EditPage.xaml.cs').read_text(encoding='utf-8')
+          p = (root/'OpenUtauMobile.csproj').read_text(encoding='utf-8')
+          assert x.count('Opacity="0.75"') == 2
+          assert '<Grid x:Name="GridPianoRoll" ColumnDefinitions="30, *"' in x
+          assert '<Grid x:Name="BorderExtend" ColumnDefinitions="60,*"' in x
+          assert 'ColumnDefinitions="60,8,*,Auto,100"' in x
+          assert 'keyRowHeight * 0.48f' in c
+          assert '.touchmarquee.v6' in p
+          print('Touch 6: restored divider/parameter widths, increased pitch labels, opacity 75%')
+          PYTOUCH6
+      - name: Touch 7 - centered keys, smaller cursor grip, undoable line drawing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH7'
+          """Run AFTER OpenUtau Touch 6's workflow modifications have been applied.
+          Adds centered piano key names and lower-right degree labels, smaller playhead tab,
+          and a line-expression drawing tool integrated into normal undo grouping.
+          """
+          from pathlib import Path
+          import re
+
+          ROOT = Path('OpenUtauMobile')
+
+          def edit(relative, callback):
+              filename = ROOT / relative
+              old = filename.read_text(encoding='utf-8-sig')
+              new = callback(old)
+              if old == new:
+                  raise RuntimeError('No modifications applied to ' + str(filename))
+              filename.write_text(new, encoding='utf-8')
+
+          def replace_exact(s, old, new, reason, count=1):
+              n=s.count(old)
+              if n!=count:
+                  raise RuntimeError(f'{reason}: expected {count} matches, got {n} - {old[:135]!r}')
+              return s.replace(old, new)
+
+          # Installation namespace is unique, keeps v6 and official app untouched.
+          def change_app_id(s):
+              for old,new in (
+                  ('<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v6</ApplicationId>',
+                   '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v7</ApplicationId>'),
+                  ('<ApplicationTitle>OpenUtau Touch 6</ApplicationTitle>',
+                   '<ApplicationTitle>OpenUtau Touch 7</ApplicationTitle>'),
+                  ('<ApplicationDisplayVersion>1.1.12</ApplicationDisplayVersion>',
+                   '<ApplicationDisplayVersion>1.1.13</ApplicationDisplayVersion>'),
+                  ('<ApplicationVersion>21</ApplicationVersion>',
+                   '<ApplicationVersion>22</ApplicationVersion>'),
+              ):
+                  s=replace_exact(s,old,new,'Touch 7 app identity')
+              return s
+          edit('OpenUtauMobile.csproj',change_app_id)
+          edit('Platforms/Android/AndroidManifest.xml',lambda s: replace_exact(s,
+              'android:label="OpenUtau Touch 6"','android:label="OpenUtau Touch 7"','Android manifest label'))
+          def provider(s):
+              s=replace_exact(s,
+                  'pers.vocoder712.openutaumobile.touchmarquee.v6.documents',
+                  'pers.vocoder712.openutaumobile.touchmarquee.v7.documents','DocumentsProvider unique authority')
+              return replace_exact(s,'ColumnTitle, "OpenUtau Touch 6"',
+                  'ColumnTitle, "OpenUtau Touch 7"','DocumentsProvider UI title')
+          edit('Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs', provider)
+
+          # Add the sixth row in the expression-tools scroll panel; editing area stays 60 dp.
+          def update_layout(s):
+              s=replace_exact(s,
+                  '<Grid RowDefinitions="30,30,30,30,30" ColumnDefinitions="20,20,20" >',
+                  '<Grid RowDefinitions="30,30,30,30,30,30" ColumnDefinitions="20,20,20" >',
+                  'six expression-tool rows')
+              pattern = r'(<Button x:Name="ButtonSwitchExpressionEraserMode" Grid.Row=")4("[^\n]*?/>)'
+              sub='''<Button x:Name="ButtonSwitchExpressionLineMode" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Text="直线" FontSize="13" LineBreakMode="NoWrap" Padding="0" BackgroundColor="Transparent" Clicked="ButtonSwitchExpressionEditMode_Clicked" SemanticProperties.Description="画一条直线参数段"/>
+                                          \\g<1>5\\g<2>'''
+              s,n=re.subn(pattern,sub,s,count=1)
+              if n!=1: raise RuntimeError('cannot insert line tool before eraser')
+              # Ensure Touch 6 layout regressions remain repaired.
+              if '<Grid x:Name="GridPianoRoll" ColumnDefinitions="30, *"' not in s or \
+                 '<Grid x:Name="BorderExtend" ColumnDefinitions="60,*"' not in s:
+                  raise RuntimeError('Touch 6 keyboard and expression grid sizes have changed unexpectedly')
+              return s
+          edit('Views/EditPage.xaml',update_layout)
+
+          # Extend existing mode enum, leaving serialized document data and curve model alone.
+          def viewmodel(s):
+              old='''            // 编辑模式
+                      Edit,
+                      // 橡皮擦模式
+                      Eraser,'''
+              new='''            // 编辑模式
+                      Edit,
+                      // 拖拽绘制直线段
+                      Line,
+                      // 橡皮擦模式
+                      Eraser,'''
+              return replace_exact(s,old,new,'expression edit mode enum')
+          edit('ViewModels/EditViewModel.cs',viewmodel)
+
+          # The C# behind uses Skia pixel coordinates to draw both names and grades.
+          def update_code(s):
+              # Touch 6 made the label large but positioned it above the center and degree in center-bottom.
+              old='''            float nameX = Math.Max(1f, (width - font.MeasureText(keyName)) * 0.5f);
+                      Canvas.DrawText(keyName, nameX, y - keyRowHeight * 0.09f, font, textPaint);
+                      if (numberedNotationIndex >= 0 && numberedNotationIndex <= 11)
+                      {
+                          string degree = MusicMath.NumberedNotations[numberedNotationIndex];
+                          font.Size = Math.Max(7f, Math.Min(keyRowHeight * 0.22f, width * 0.30f));
+                          float degreeX = Math.Max(1f, (width - font.MeasureText(degree)) * 0.5f);
+                          Canvas.DrawText(degree, degreeX, y + keyRowHeight * 0.28f, font, textPaint);
+                      }'''
+              new='''            float nameX = (width - font.MeasureText(keyName)) * 0.5f;
+                      // Text drawing uses the baseline: offset by one-third of font size
+                      // to optically center the name in its piano-key row.
+                      Canvas.DrawText(keyName, nameX, y + font.Size * 0.34f, font, textPaint);
+                      if (numberedNotationIndex >= 0 && numberedNotationIndex <= 11)
+                      {
+                          string degree = MusicMath.NumberedNotations[numberedNotationIndex];
+                          font.Size = Math.Max(7f, Math.Min(keyRowHeight * 0.22f, width * 0.30f));
+                          // Tiny numbered-notation degree at lower-right. Overlap with the
+                          // larger key name is intentional on these 30dp-wide keys.
+                          float degreeX = Math.Max(0, width - font.MeasureText(degree) - 1.5f * (float)_viewModel.Density);
+                          float degreeY = y + keyRowHeight * 0.5f - Math.Max(1f, keyRowHeight * 0.065f);
+                          Canvas.DrawText(degree, degreeX, degreeY, font, textPaint);
+                      }'''
+              s=replace_exact(s,old,new,'piano-key text alignment')
+              # Touch 4 playhead top rectangle originally 10x18dp; Touch 7 make 6x12dp.
+              s=replace_exact(s,
+                  '''canvas.DrawRoundRect(new SKRect(x - 5f * density, 0,
+                      x + 5f * density, 18f * density), 1.5f * density,
+                      1.5f * density, handle);''',
+                  '''canvas.DrawRoundRect(new SKRect(x - 3f * density, 0,
+                          x + 3f * density, 12f * density), 1.2f * density,
+                          1.2f * density, handle);''','smaller playhead rectangle')
+
+              s=replace_exact(s,
+                  'ButtonSwitchExpressionEditMode.BackgroundColor = mode == EditViewModel.ExpressionEditMode.Edit ? activeColor : Colors.Transparent;',
+                  '''ButtonSwitchExpressionEditMode.BackgroundColor = mode == EditViewModel.ExpressionEditMode.Edit ? activeColor : Colors.Transparent;
+                          ButtonSwitchExpressionLineMode.BackgroundColor = mode == EditViewModel.ExpressionEditMode.Line ? activeColor : Colors.Transparent;''',
+                  'expression mode button highlight')
+
+              # Line mode is preview-only until release, then uses existing Start/Update/End
+              # expression APIs to generate a single UndoGroup + SetCurveCommand.
+              s=replace_exact(s,
+                  '    private readonly GestureProcessor _expressionGestureProcessor;',
+                  '''    private readonly GestureProcessor _expressionGestureProcessor;
+              private bool _touch7LinePreview;
+              private SKPoint _touch7LineStart;
+              private SKPoint _touch7LineEnd;
+
+              private void DrawTouch7LinePreview(SKCanvas canvas)
+              {
+                  if (!_touch7LinePreview) return;
+                  using SKPaint line = new SKPaint
+                  {
+                      Color = ThemeColorsManager.Current.EditedExpressionStrokePaint.Color.WithAlpha(225),
+                      StrokeWidth = 2.5f * (float)_viewModel.Density,
+                      Style = SKPaintStyle.Stroke,
+                      IsAntialias = true,
+                  };
+                  canvas.DrawLine(_touch7LineStart, _touch7LineEnd, line);
+              }
+          ''','line preview state and painter')
+
+              def insert_case(s,begin,end,code,desc):
+                  start = s.find(begin)
+                  if start<0: raise RuntimeError(desc+': begin marker not found')
+                  finish = s.find(end,start+len(begin))
+                  if finish<0: raise RuntimeError(desc+': end marker not found')
+                  fragment=s[start:finish]
+                  needle='                case EditViewModel.ExpressionEditMode.Eraser:'
+                  if fragment.count(needle)!=1: raise RuntimeError(desc+': expected one Eraser branch')
+                  fragment=fragment.replace(needle,code+needle)
+                  return s[:start]+fragment+s[finish:]
+
+              # On tap, both straight-line and freehand should update a single point.
+              s=insert_case(s,
+                  '_expressionGestureProcessor.Tap +=',
+                  '_expressionGestureProcessor.DoubleTap +=',
+                  '''                case EditViewModel.ExpressionEditMode.Line:
+                              _viewModel.StartDrawExpression(e.Position, (float)ExpressionCanvas.Height);
+                              _viewModel.UpdateDrawExpression(e.Position, (float)ExpressionCanvas.Height);
+                              _viewModel.EndDrawExpression();
+                              ExpressionCanvas.InvalidateSurface();
+                              break;
+          ''','line tap')
+              s=insert_case(s,
+                  '_expressionGestureProcessor.PanStart +=',
+                  '_expressionGestureProcessor.PanUpdate +=',
+                  '''                case EditViewModel.ExpressionEditMode.Line:
+                              // Keep the underlying curve unchanged during drag.
+                              _touch7LineStart = e.StartPosition;
+                              _touch7LineEnd = e.StartPosition;
+                              _touch7LinePreview = true;
+                              ExpressionCanvas.InvalidateSurface();
+                              break;
+          ''','line drag start')
+              s=insert_case(s,
+                  '_expressionGestureProcessor.PanUpdate +=',
+                  '_expressionGestureProcessor.PanEnd +=',
+                  '''                case EditViewModel.ExpressionEditMode.Line:
+                              if (_touch7LinePreview)
+                              {
+                                  _touch7LineEnd = e.Position;
+                                  ExpressionCanvas.InvalidateSurface();
+                              }
+                              break;
+          ''','line drag update')
+              s=insert_case(s,
+                  '_expressionGestureProcessor.PanEnd +=',
+                  '_expressionGestureProcessor.ZoomStart +=',
+                  '''                case EditViewModel.ExpressionEditMode.Line:
+                              if (_touch7LinePreview)
+                              {
+                                  _touch7LineEnd = e.EndPosition;
+                                  _touch7LinePreview = false;
+                                  if (_viewModel.EditingPart != null)
+                                  {
+                                      // Existing interpolation and undo commands commit the
+                                      // full segment as one edit, not individual freehand points.
+                                      _viewModel.StartDrawExpression(_touch7LineStart, (float)ExpressionCanvas.Height);
+                                      _viewModel.UpdateDrawExpression(_touch7LineEnd, (float)ExpressionCanvas.Height);
+                                      _viewModel.EndDrawExpression();
+                                  }
+                                  ExpressionCanvas.InvalidateSurface();
+                              }
+                              break;
+          ''','line drag end')
+
+              # Preview needs to render in all code paths (including no existing expression curve).
+              s=replace_exact(s,
+                  '''canvas.DrawLine(0, defaultHeight, canvas.DeviceClipBounds.Width, defaultHeight, ThemeColorsManager.Current.EditedExpressionStrokePaint);
+                          return;''',
+                  '''canvas.DrawLine(0, defaultHeight, canvas.DeviceClipBounds.Width, defaultHeight, ThemeColorsManager.Current.EditedExpressionStrokePaint);
+                          DrawTouch7LinePreview(canvas);
+                          return;''','preview when no curve exists')
+              s=replace_exact(s,
+                  '''            return;
+                  }
+                  float innerRadius = 6 * (float)_viewModel.Density;''',
+                  '''            DrawTouch7LinePreview(canvas);
+                      return;
+                  }
+                  float innerRadius = 6 * (float)_viewModel.Density;''','preview for existing curve')
+              s=replace_exact(s,
+                  '''    }
+
+              private void ExpressionCanvas_Touch(object sender,''',
+                  '''        DrawTouch7LinePreview(canvas);
+              }
+
+              private void ExpressionCanvas_Touch(object sender,''','preview for noncurve parameters')
+
+              s=replace_exact(s,
+                  '''        else if (sender == ButtonSwitchExpressionEraserMode)
+                  {
+                      _viewModel.CurrentExpressionEditMode = EditViewModel.ExpressionEditMode.Eraser;
+                  }''',
+                  '''        else if (sender == ButtonSwitchExpressionLineMode)
+                  {
+                      _viewModel.CurrentExpressionEditMode = EditViewModel.ExpressionEditMode.Line;
+                  }
+                  else if (sender == ButtonSwitchExpressionEraserMode)
+                  {
+                      _viewModel.CurrentExpressionEditMode = EditViewModel.ExpressionEditMode.Eraser;
+                  }''','straight-line tool click handler')
+              return s
+          edit('Views/EditPage.xaml.cs',update_code)
+
+          # Final integrity checks before dotnet publish.
+          x=(ROOT/'Views/EditPage.xaml').read_text(encoding='utf-8')
+          c=(ROOT/'Views/EditPage.xaml.cs').read_text(encoding='utf-8')
+          v=(ROOT/'ViewModels/EditViewModel.cs').read_text(encoding='utf-8')
+          p=(ROOT/'OpenUtauMobile.csproj').read_text(encoding='utf-8')
+          assert 'ButtonSwitchExpressionLineMode' in x and c
+          assert 'ExpressionEditMode.Line' in c and '\n            Line,\n' in v
+          assert 'float degreeX = Math.Max(0, width -' in c
+          assert 'Canvas.DrawText(keyName, nameX, y + font.Size * 0.34f' in c
+          assert 'x - 3f * density' in c and '12f * density' in c
+          assert c.count('DrawTouch7LinePreview(canvas);') == 3
+          assert x.count('Opacity="0.75"')==2
+          assert '<Grid x:Name="GridPianoRoll" ColumnDefinitions="30, *"' in x
+          assert 'touchmarquee.v7' in p
+          print('Touch 7: centered key labels, lower-right numeric degrees, compact playhead, undo-aware straight-line tool')
+          PYTOUCH7
+      - name: Validate Touch 7 line gesture event properties
+        shell: bash
+        run: |
+          python - <<'PYCHECK'
+          from pathlib import Path
+          s = Path('OpenUtauMobile/Views/EditPage.xaml.cs').read_text(encoding='utf-8-sig')
+          def segment(start, end):
+              return s.split(start,1)[1].split(end,1)[0]
+          end = segment('_expressionGestureProcessor.PanEnd +=', '_expressionGestureProcessor.ZoomStart +=')
+          update = segment('_expressionGestureProcessor.PanUpdate +=', '_expressionGestureProcessor.PanEnd +=')
+          assert '_touch7LineEnd = e.EndPosition;' in end
+          assert '_touch7LineEnd = e.Position;' not in end
+          assert '_touch7LineEnd = e.Position;' in update
+          args = Path('OpenUtauMobile/Views/Utils/TouchEventArgs.cs').read_text(encoding='utf-8-sig')
+          panend = args.split('class PanEndEventArgs',1)[1].split('class ZoomStartEventArgs',1)[0]
+          assert 'SKPoint EndPosition' in panend
+          print('Touch 7 gesture event types verified')
+          PYCHECK
+      - name: Touch 8 - aim for 120Hz cursor, responsive piano scroll and inertia
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH8'
+          from pathlib import Path
+          root = Path('OpenUtauMobile')
+
+          def replace_once(path, before, after, purpose):
+              original = path.read_text(encoding='utf-8-sig')
+              count = original.count(before)
+              if count != 1:
+                  raise RuntimeError(f'{purpose}: expected one exact source match, found {count}. Target: {path}')
+              path.write_text(original.replace(before, after, 1), encoding='utf-8')
+              print('OK:', purpose)
+
+          # Each Touch release uses an independent Android identity, including DocumentsProvider.
+          replace_once(root/'OpenUtauMobile.csproj',
+              '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v7</ApplicationId>',
+              '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v8</ApplicationId>',
+              'Touch 8 independent Android app ID')
+          replace_once(root/'OpenUtauMobile.csproj',
+              '<ApplicationTitle>OpenUtau Touch 7</ApplicationTitle>',
+              '<ApplicationTitle>OpenUtau Touch 8</ApplicationTitle>',
+              'Touch 8 app title')
+          replace_once(root/'Platforms/Android/AndroidManifest.xml',
+              'android:label="OpenUtau Touch 7"',
+              'android:label="OpenUtau Touch 8"',
+              'Touch 8 Android launcher label')
+          replace_once(root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',
+              'pers.vocoder712.openutaumobile.touchmarquee.v7.documents',
+              'pers.vocoder712.openutaumobile.touchmarquee.v8.documents',
+              'Touch 8 unique file provider')
+          replace_once(root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',
+              'ColumnTitle, "OpenUtau Touch 7"',
+              'ColumnTitle, "OpenUtau Touch 8"',
+              'Touch 8 file provider title')
+
+          # The original playback time-position timer is only 20Hz; aim at 120Hz.
+          # This changes visual play-position polling, not audio sample rate or synthesis.
+          replace_once(Path('OpenUtau.Core/Util/Preferences.cs'),
+              'public int PlaybackRefreshRate = 20;',
+              'public int PlaybackRefreshRate = 120;',
+              '120Hz target for playback cursor updates')
+
+          edit = root/'Views/EditPage.xaml.cs'
+          # Rx Throttle is a DEBOUNCE, NOT a frame limiter: continued gestures can
+          # postpone emissions indefinitely. Sample periodically emits the latest state.
+          replace_once(edit,
+              '.Throttle(TimeSpan.FromMilliseconds(16.6)) // 限制更新频率为60FPS',
+              '.Sample(TimeSpan.FromSeconds(1.0 / 120.0)) // Touch 8: sample latest drag position at up to 120Hz; do not debounce',
+              'replace delayed horizontal redraws with 120Hz sampling')
+
+          # Touch 3's inertia animation was created with a 16ms UI timer. Update it to
+          # the same nominal 120Hz cadence; the actual Android frame rate may be lower.
+          replace_once(edit,
+              '_timer.Interval = TimeSpan.FromMilliseconds(16);',
+              '_timer.Interval = TimeSpan.FromSeconds(1.0 / 120.0);',
+              '120Hz target for inertial viewport animation')
+
+          # Fail before paying for a full Android build if any expected change is missing.
+          preferences=Path('OpenUtau.Core/Util/Preferences.cs').read_text(encoding='utf-8-sig')
+          code=edit.read_text(encoding='utf-8-sig')
+          assert 'public int PlaybackRefreshRate = 120;' in preferences
+          assert '.Sample(TimeSpan.FromSeconds(1.0 / 120.0))' in code
+          assert '.Throttle(TimeSpan.FromMilliseconds(16.6))' not in code
+          assert '_timer.Interval = TimeSpan.FromSeconds(1.0 / 120.0);' in code
+          assert 'pers.vocoder712.openutaumobile.touchmarquee.v8.documents' in (root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs').read_text(encoding='utf-8-sig')
+          print('Touch 8 performance patch applied. Nominal playback / scroll target: 120Hz; physical FPS must be measured on a device.')
+          PYTOUCH8
+      - name: Touch 9 - instrument actual input, redraw, canvas paint and UI timer callbacks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH9'
+          from pathlib import Path
+          import re
+          root=Path('OpenUtauMobile')
+
+          def replace_once(path, before, after, purpose):
+              s=path.read_text(encoding='utf-8-sig')
+              n=s.count(before)
+              if n!=1:
+                  raise RuntimeError(f'{purpose}: expected 1 match, found {n}: {path}')
+              path.write_text(s.replace(before,after,1),encoding='utf-8')
+              print('OK:',purpose)
+
+          replace_once(root/'OpenUtauMobile.csproj',
+              '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v8</ApplicationId>',
+              '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v9</ApplicationId>',
+              'Independent Touch 9 Android package')
+          replace_once(root/'OpenUtauMobile.csproj',
+              '<ApplicationTitle>OpenUtau Touch 8</ApplicationTitle>',
+              '<ApplicationTitle>OpenUtau Touch 9</ApplicationTitle>',
+              'Touch 9 title')
+          replace_once(root/'Platforms/Android/AndroidManifest.xml',
+              'android:label="OpenUtau Touch 8"',
+              'android:label="OpenUtau Touch 9"',
+              'Touch 9 launcher label')
+          replace_once(root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',
+              'pers.vocoder712.openutaumobile.touchmarquee.v8.documents',
+              'pers.vocoder712.openutaumobile.touchmarquee.v9.documents',
+              'Touch 9 provider authority')
+          replace_once(root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs',
+              'ColumnTitle, "OpenUtau Touch 8"',
+              'ColumnTitle, "OpenUtau Touch 9"',
+              'Touch 9 provider title')
+
+          # Diagnostic label sits at bottom-right of the editor and does not intercept touches.
+          xaml=root/'Views/EditPage.xaml'
+          replace_once(xaml,
+              '            <!-- 工作列表 -->',
+              '''            <!-- Touch 9: lightweight rolling diagnostics, not an actual display FPS counter -->
+                      <Label x:Name="Touch9DiagLabel"
+                             Text="Touch 9 diagnosing…"
+                             TextColor="White"
+                             BackgroundColor="#C0202020"
+                             FontSize="11"
+                             FontAttributes="Bold"
+                             Padding="7,5"
+                             InputTransparent="True"
+                             AbsoluteLayout.LayoutBounds="1,1,AutoSize,AutoSize"
+                             AbsoluteLayout.LayoutFlags="PositionProportional" />
+                      <!-- 工作列表 -->''',
+              'Diagnostic overlay label')
+
+          cs=root/'Views/EditPage.xaml.cs'
+          replace_once(cs,
+              '    private readonly GestureProcessor _expressionGestureProcessor;',
+              '''    private readonly GestureProcessor _expressionGestureProcessor;
+              // Touch 9: these count real callbacks, not promises of 120 presented FPS.
+              private IDispatcherTimer? _touch9ReportTimer;
+              private int _touch9Moves;
+              private int _touch9SampleRequests;
+              private int _touch9PianoPaints;
+              private int _touch9GridPaints;
+              private int _touch9PlaybackTicks;
+              private long _touch9PianoPaintElapsedTicks;
+              private long _touch9GridPaintElapsedTicks;''',
+              'Counters for diagnostic measurements')
+
+          replace_once(cs,
+              '''            .ObserveOn(RxApp.MainThreadScheduler) // 确保在主线程执行
+                      .Subscribe(_ =>
+                      {
+                          PianoRollCanvas.InvalidateSurface();''',
+              '''            .ObserveOn(RxApp.MainThreadScheduler) // 确保在主线程执行
+                      .Subscribe(_ =>
+                      {
+                          System.Threading.Interlocked.Increment(ref _touch9SampleRequests);
+                          PianoRollCanvas.InvalidateSurface();''',
+              'Count sample-triggered redraw requests')
+
+          replace_once(cs,
+              '''        PlaybackTimer.Tick += (s, e) =>
+                  {
+                      PlaybackManager.Inst.UpdatePlayPos();''',
+              '''        PlaybackTimer.Tick += (s, e) =>
+                  {
+                      System.Threading.Interlocked.Increment(ref _touch9PlaybackTicks);
+                      PlaybackManager.Inst.UpdatePlayPos();''',
+              'Count actual UI playback timer ticks')
+
+          replace_once(cs,
+              '''        PlaybackTimer.Start();''',
+              '''        PlaybackTimer.Start();
+                  // One-second reporting is separate from all rendering/cursor timers.
+                  _touch9ReportTimer = Dispatcher.CreateTimer();
+                  _touch9ReportTimer.Interval = TimeSpan.FromSeconds(1);
+                  _touch9ReportTimer.Tick += (sender, args) =>
+                  {
+                      int touch = System.Threading.Interlocked.Exchange(ref _touch9Moves, 0);
+                      int req = System.Threading.Interlocked.Exchange(ref _touch9SampleRequests, 0);
+                      int piano = System.Threading.Interlocked.Exchange(ref _touch9PianoPaints, 0);
+                      int grid = System.Threading.Interlocked.Exchange(ref _touch9GridPaints, 0);
+                      int tick = System.Threading.Interlocked.Exchange(ref _touch9PlaybackTicks, 0);
+                      long pianoTicks = System.Threading.Interlocked.Exchange(ref _touch9PianoPaintElapsedTicks, 0);
+                      long gridTicks = System.Threading.Interlocked.Exchange(ref _touch9GridPaintElapsedTicks, 0);
+                      double pianoMs = piano == 0 ? 0 : 1000.0 * pianoTicks / System.Diagnostics.Stopwatch.Frequency / piano;
+                      double gridMs = grid == 0 ? 0 : 1000.0 * gridTicks / System.Diagnostics.Stopwatch.Frequency / grid;
+                      Touch9DiagLabel.Text = $"Touch {touch}/s   Req {req}/s   Tick {tick}/s\\nPiano {piano}/s ({pianoMs:F1}ms)  Grid {grid}/s ({gridMs:F1}ms)";
+                  };
+                  _touch9ReportTimer.Start();''',
+              'One-second rolling performance metrics')
+
+          replace_once(cs,
+              '''        PlaybackTimer.Stop();''',
+              '''        _touch9ReportTimer?.Stop();
+                  PlaybackTimer.Stop();''',
+              'Dispose diagnostic report timer')
+
+          # Touch 3 added playhead-drag handling before ProcessTouch(), so the
+          # original function body no longer begins with ProcessTouch(). Insert
+          # instrumentation at the method entrance without changing its body.
+          touch_header = ("    private void PianoRollCanvas_Touch(object sender, "
+                          "SkiaSharp.Views.Maui.SKTouchEventArgs e)\n    {\n")
+          s_touch = cs.read_text(encoding='utf-8-sig')
+          count = s_touch.count(touch_header)
+          if count != 1:
+              raise RuntimeError(f'PianoRollCanvas_Touch method entrance: expected 1 match, found {count}')
+          s_touch = s_touch.replace(touch_header,
+              touch_header +
+              "        if (e.ActionType == SkiaSharp.Views.Maui.SKTouchAction.Moved)\n" +
+              "            System.Threading.Interlocked.Increment(ref _touch9Moves);\n",
+              1)
+          cs.write_text(s_touch, encoding='utf-8')
+          print('OK: Count incoming finger move callbacks (method entrance; preserves Touch 3 playhead gestures)')
+
+          def instrument_paint_method(path, method_name, count_name, elapsed_name):
+              s=path.read_text(encoding='utf-8-sig')
+              header=f'    private void {method_name}(object sender, SkiaSharp.Views.Maui.SKPaintSurfaceEventArgs e)'
+              if s.count(header)!=1:
+                  raise RuntimeError(f'{method_name}: expected unique declaration')
+              begin=s.index(header)
+              opening=s.index('{',begin+len(header))
+              nesting=0
+              closing=None
+              for i in range(opening,len(s)):
+                  if s[i]=='{': nesting+=1
+                  elif s[i]=='}':
+                      nesting-=1
+                      if nesting==0:
+                          closing=i
+                          break
+              if closing is None:
+                  raise RuntimeError(f'{method_name}: unmatched braces')
+              body=s[opening+1:closing]
+              # The try/finally counts even early returns and includes only the PaintSurface callback.
+              wrapped='''{
+                  long _touch9PaintStart = System.Diagnostics.Stopwatch.GetTimestamp();
+                  try
+                  {'''+body+'''
+                  }
+                  finally
+                  {
+                      System.Threading.Interlocked.Increment(ref '''+count_name+''');
+                      System.Threading.Interlocked.Add(ref '''+elapsed_name+''', System.Diagnostics.Stopwatch.GetTimestamp() - _touch9PaintStart);
+                  }
+              }'''
+              path.write_text(s[:opening]+wrapped+s[closing+1:],encoding='utf-8')
+              print('OK: instrumented '+method_name)
+
+          instrument_paint_method(cs,'PianoRollCanvas_PaintSurface','_touch9PianoPaints','_touch9PianoPaintElapsedTicks')
+          instrument_paint_method(cs,'PianoRollTickBackgroundCanvas_PaintSurface','_touch9GridPaints','_touch9GridPaintElapsedTicks')
+
+          s=cs.read_text(encoding='utf-8-sig')
+          x=xaml.read_text(encoding='utf-8-sig')
+          assert s.count('_touch9PianoPaints')>=3
+          assert s.count('_touch9GridPaints')>=3
+          assert s.count('_touch9Moves')>=3
+          assert s.count('_touch9SampleRequests')>=3
+          assert s.count('_touch9PlaybackTicks')>=3
+          assert 'Touch9DiagLabel' in x and 'InputTransparent="True"' in x
+          assert 'pers.vocoder712.openutaumobile.touchmarquee.v9' in (root/'OpenUtauMobile.csproj').read_text(encoding='utf-8')
+          print('Touch 9 diagnostics ready. Note: PaintSurface invocation is NOT equal to actual display FPS.')
+          PYTOUCH9
+      - name: Touch 10 - Choreographer VSYNC diagnostic and opt-in frame drive
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH10'
+          from pathlib import Path
+          
+          root = Path('OpenUtauMobile')
+          
+          def change(path, before, after, label):
+              text = path.read_text(encoding='utf-8-sig')
+              n = text.count(before)
+              if n != 1:
+                  raise RuntimeError(f'{label}: expected exactly 1 match, got {n} in {path}')
+              path.write_text(text.replace(before, after, 1), encoding='utf-8')
+              print('OK:', label)
+          
+          # Keep every earlier Touch feature intact, but use independent signing/package identity.
+          change(root/'OpenUtauMobile.csproj',
+                 '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v9</ApplicationId>',
+                 '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v10</ApplicationId>',
+                 'Touch 10 package ID')
+          change(root/'OpenUtauMobile.csproj',
+                 '<ApplicationTitle>OpenUtau Touch 9</ApplicationTitle>',
+                 '<ApplicationTitle>OpenUtau Touch 10</ApplicationTitle>',
+                 'Touch 10 app title')
+          change(root/'Platforms/Android/AndroidManifest.xml',
+                 'android:label="OpenUtau Touch 9"',
+                 'android:label="OpenUtau Touch 10"',
+                 'Touch 10 launcher label')
+          provider = root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs'
+          change(provider,
+                 'pers.vocoder712.openutaumobile.touchmarquee.v9.documents',
+                 'pers.vocoder712.openutaumobile.touchmarquee.v10.documents',
+                 'Touch 10 document provider authority')
+          change(provider,
+                 'ColumnTitle, "OpenUtau Touch 9"',
+                 'ColumnTitle, "OpenUtau Touch 10"',
+                 'Touch 10 provider title')
+          
+          # A tiny compact switch and the original Touch 9 diagnostics occupy one stack.
+          xaml = root/'Views/EditPage.xaml'
+          change(xaml,
+                 # Match Touch 9's generated XAML exactly: it indents the Label by 12
+                 # spaces, rather than the 16 spaces assumed by the first Touch 10 build.
+                 '''            <!-- Touch 9: lightweight rolling diagnostics, not an actual display FPS counter -->
+                      <Label x:Name="Touch9DiagLabel"
+                             Text="Touch 9 diagnosing…"
+                             TextColor="White"
+                             BackgroundColor="#C0202020"
+                             FontSize="11"
+                             FontAttributes="Bold"
+                             Padding="7,5"
+                             InputTransparent="True"
+                             AbsoluteLayout.LayoutBounds="1,1,AutoSize,AutoSize"
+                             AbsoluteLayout.LayoutFlags="PositionProportional" />''',
+                 '''            <!-- Touch 10: independent VSYNC probe and opt-in frame-driven redraw experiment. -->
+                      <VerticalStackLayout AbsoluteLayout.LayoutBounds="1,1,AutoSize,AutoSize"
+                                           AbsoluteLayout.LayoutFlags="PositionProportional" Spacing="2">
+                          <Button x:Name="Touch10DriveButton"
+                                  Text="帧驱动：关" HeightRequest="30" FontSize="12" Padding="8,0"
+                                  CornerRadius="7" TextColor="White" BackgroundColor="#C0303030"
+                                  HorizontalOptions="End" Clicked="Touch10DriveButton_Clicked" />
+                          <Label x:Name="Touch9DiagLabel"
+                                 Text="Touch 10 diagnosing…" TextColor="White" BackgroundColor="#C0202020"
+                                 FontSize="11" FontAttributes="Bold" Padding="7,5" InputTransparent="True" />
+                      </VerticalStackLayout>''',
+                 'Touchable frame-drive toggle while preserving Touch 9 metrics')
+          
+          edit = root/'Views/EditPage.xaml.cs'
+          
+          # Touch 3 created an inertia animation driven by a timer. In experimental mode,
+          # let the frame callback advance its existing physics instead of a second timer.
+          change(edit,
+                 '''        private readonly Action? _onScroll;
+                  private Transformer? _transformer;''',
+                 '''        private readonly Action? _onScroll;
+                  public bool ExternalFrameDrive { get; set; }
+                  public bool IsAnimating => _transformer != null;
+                  public void Pulse() { if (ExternalFrameDrive && _transformer != null) Tick(null, EventArgs.Empty); }
+                  private Transformer? _transformer;''',
+                 'Allow frame-paced inertia while retaining old physics')
+          change(edit,
+                 '''            _timer.Start();
+                  }
+          
+                  private void Tick(object? sender, EventArgs e)''',
+                 '''            if (!ExternalFrameDrive) _timer.Start();
+                  }
+          
+                  private void Tick(object? sender, EventArgs e)''',
+                 'Avoid competing inertia timers in frame-drive mode')
+          change(edit,
+                 '''        _pianoMomentum ??= new MomentumScroller(Dispatcher);
+                  _pianoMomentum.Begin(point);''',
+                 '''        _pianoMomentum ??= new MomentumScroller(Dispatcher);
+                  _pianoMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  _pianoMomentum.Begin(point);''',
+                 'Propagate experimental mode to piano inertia')
+          change(edit,
+                 '''        _trackMomentum ??= new MomentumScroller(Dispatcher, UpdateLeftScrollView);
+                  _trackMomentum.Begin(point);''',
+                 '''        _trackMomentum ??= new MomentumScroller(Dispatcher, UpdateLeftScrollView);
+                  _trackMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  _trackMomentum.Begin(point);''',
+                 'Propagate experimental mode to track inertia')
+          
+          # An Android-specific callback, never requested when no gesture/animation is active.
+          # Note: VSYNC callbacks are not actual presented frames. In drive mode, we also
+          # request repaint for a brief gesture interval; the UI may still be capped.
+          change(edit,
+                 '''    private IDispatcherTimer? _touch9ReportTimer;''',
+                 '''    private IDispatcherTimer? _touch9ReportTimer;
+              private bool _touch10DriveEnabled = false; // default OFF; can be reverted instantly
+          #if ANDROID
+              private Android.Views.Choreographer? _touch10Choreographer;
+              private Touch10VsyncCallback? _touch10Callback;
+              private bool _touch10LoopRunning;
+              private bool _touch10FingerDown;
+              private bool _touch10Disposed;
+              private long _touch10LastTouchStamp;
+              private int _touch10VsyncCallbacks;
+              private int _touch10DrivenRequests;
+          
+              private sealed class Touch10VsyncCallback : Java.Lang.Object, Android.Views.Choreographer.IFrameCallback
+              {
+                  private readonly EditPage _page;
+                  public Touch10VsyncCallback(EditPage page) { _page = page; }
+                  public void DoFrame(long frameTimeNanos) { _page.Touch10OnFrame(frameTimeNanos); }
+              }
+          
+              private void Touch10StartFrameLoop()
+              {
+                  if (_touch10Disposed || _touch10LoopRunning) return;
+                  // Touch handler and the MAUI playback timer run on the main Looper.
+                  _touch10Choreographer ??= Android.Views.Choreographer.Instance;
+                  if (_touch10Choreographer == null) return;
+                  _touch10Callback ??= new Touch10VsyncCallback(this);
+                  _touch10LoopRunning = true;
+                  _touch10Choreographer.PostFrameCallback(_touch10Callback);
+              }
+          
+              private void Touch10StopFrameLoop()
+              {
+                  _touch10LoopRunning = false;
+                  if (_touch10Choreographer != null && _touch10Callback != null)
+                      _touch10Choreographer.RemoveFrameCallback(_touch10Callback);
+              }
+          
+              private void Touch10HandleTouch(SkiaSharp.Views.Maui.SKTouchAction action)
+              {
+                  if (action == SkiaSharp.Views.Maui.SKTouchAction.Pressed ||
+                      action == SkiaSharp.Views.Maui.SKTouchAction.Moved)
+                  {
+                      _touch10FingerDown = true;
+                      _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                      Touch10StartFrameLoop();
+                  }
+                  else if (action == SkiaSharp.Views.Maui.SKTouchAction.Released ||
+                           action == SkiaSharp.Views.Maui.SKTouchAction.Cancelled)
+                  {
+                      _touch10FingerDown = false;
+                      _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                  }
+              }
+          
+              private void Touch10OnFrame(long frameTimeNanos)
+              {
+                  if (!_touch10LoopRunning || _touch10Disposed) return;
+                  System.Threading.Interlocked.Increment(ref _touch10VsyncCallbacks);
+                  bool animating = (_pianoMomentum?.IsAnimating == true) || (_trackMomentum?.IsAnimating == true);
+                  // All callbacks happen on the UI thread. Never block waiting for a render.
+                  if (_touch10DriveEnabled)
+                  {
+                      _pianoMomentum?.Pulse();
+                      _trackMomentum?.Pulse();
+                      // Experimental comparison: does Skia really execute a draw for each
+                      // Android frame when explicitly invalidated during a finger gesture?
+                      if (_touch10FingerDown)
+                      {
+                          System.Threading.Interlocked.Increment(ref _touch10DrivenRequests);
+                          PianoRollCanvas.InvalidateSurface();
+                          PianoRollTickBackgroundCanvas.InvalidateSurface();
+                      }
+                  }
+                  long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                  bool recentlyTouched = (now - _touch10LastTouchStamp) < System.Diagnostics.Stopwatch.Frequency * 3 / 2;
+                  if (!_touch10FingerDown && !_viewModel.Playing && !animating && !recentlyTouched)
+                  {
+                      _touch10LoopRunning = false; // frame callbacks are one-shot
+                      return;
+                  }
+                  _touch10Choreographer?.PostFrameCallback(_touch10Callback);
+              }
+          #endif''',
+                 'Android Choreographer probe and reversible frame-paced scroll')
+          
+          # Touch 9 attached metrics at this unique call site; add the probe there.
+          change(edit,
+                 '''        if (e.ActionType == SkiaSharp.Views.Maui.SKTouchAction.Moved)
+                      System.Threading.Interlocked.Increment(ref _touch9Moves);''',
+                 '''        if (e.ActionType == SkiaSharp.Views.Maui.SKTouchAction.Moved)
+                      System.Threading.Interlocked.Increment(ref _touch9Moves);
+          #if ANDROID
+                  Touch10HandleTouch(e.ActionType);
+          #endif''',
+                 'Track Android VSYNC only during editor touch gestures')
+          
+          # Also probe during playback to diagnose whether a 120Hz frame pulse is available.
+          change(edit,
+                 '''            System.Threading.Interlocked.Increment(ref _touch9PlaybackTicks);
+                      PlaybackManager.Inst.UpdatePlayPos();''',
+                 '''            System.Threading.Interlocked.Increment(ref _touch9PlaybackTicks);
+          #if ANDROID
+                      if (_viewModel.Playing) Touch10StartFrameLoop();
+          #endif
+                      PlaybackManager.Inst.UpdatePlayPos();''',
+                 'Probe frame callbacks while playing')
+          
+          # Report both incoming Choreographer callbacks and how often experimental
+          # redraws were requested, next to the existing paint counters.
+          change(edit,
+                 '''Touch9DiagLabel.Text = $"Touch {touch}/s   Req {req}/s   Tick {tick}/s\\nPiano {piano}/s ({pianoMs:F1}ms)  Grid {grid}/s ({gridMs:F1}ms)";''',
+                 '''Touch9DiagLabel.Text = $"Touch {touch}/s   Req {req}/s   Tick {tick}/s\\nPiano {piano}/s ({pianoMs:F1}ms)  Grid {grid}/s ({gridMs:F1}ms)";
+          #if ANDROID
+                      int vsync = System.Threading.Interlocked.Exchange(ref _touch10VsyncCallbacks, 0);
+                      int drive = System.Threading.Interlocked.Exchange(ref _touch10DrivenRequests, 0);
+                      Touch9DiagLabel.Text += $"\\nVSYNC {vsync}/s   Drive {drive}/s   {(_touch10DriveEnabled ? "ON" : "OFF")}";
+          #endif''',
+                 'Add VSYNC and frame-drive rates to performance report')
+          
+          # The opt-in switch is intentionally small. It stops any active inertia when
+          # changing modes so the old and new scheduling methods cannot run together.
+          change(edit,
+                 '''    public void Dispose()
+              {''',
+                 '''    private void Touch10DriveButton_Clicked(object sender, EventArgs e)
+              {
+                  _touch10DriveEnabled = !_touch10DriveEnabled;
+                  _pianoMomentum?.Stop();
+                  _trackMomentum?.Stop();
+                  if (_pianoMomentum != null) _pianoMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  if (_trackMomentum != null) _trackMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  Touch10DriveButton.Text = _touch10DriveEnabled ? "帧驱动：开" : "帧驱动：关";
+          #if ANDROID
+                  _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                  Touch10StartFrameLoop();
+          #endif
+              }
+          
+              protected override void OnDisappearing()
+              {
+          #if ANDROID
+                  _touch10FingerDown = false;
+                  Touch10StopFrameLoop();
+          #endif
+                  base.OnDisappearing();
+              }
+          
+              public void Dispose()
+              {''',
+                 'Touch 10 mode switch and lifecycle cleanup')
+          change(edit,
+                 '''        PlaybackTimer.Stop();''',
+                 '''#if ANDROID
+                  _touch10Disposed = true;
+                  Touch10StopFrameLoop();
+                  _touch10Callback?.Dispose();
+                  _touch10Callback = null;
+          #endif
+                  PlaybackTimer.Stop();''',
+                 'Release native VSYNC callback when editor disposed')
+          
+          # Non-Android builds keep the original timer behavior. A live camera video of
+          # the diagnosis, not the nominal FPS, decides whether changes are beneficial.
+          cs = edit.read_text(encoding='utf-8-sig')
+          x = xaml.read_text(encoding='utf-8-sig')
+          assert cs.count('private void Touch10OnFrame(') == 1
+          assert cs.count('Touch10StartFrameLoop();') >= 2
+          assert cs.count('Touch10DriveButton_Clicked(') == 1
+          assert 'Touch9DiagLabel.Text += $"\\nVSYNC' in cs
+          assert 'ExternalFrameDrive' in cs and 'IsAnimating' in cs
+          assert 'Touch10DriveButton' in x and 'Touch9DiagLabel' in x
+          assert 'touchmarquee.v10.documents' in provider.read_text(encoding='utf-8-sig')
+          print('Touch 10 VSYNC experiment source patch applied; actual FPS requires device testing.')
+          PYTOUCH10
+      - name: Touch 11 - de-jitter VSYNC and selectable 60/120Hz frame pacing
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH11'
+          from pathlib import Path
+
+          root = Path('OpenUtauMobile')
+
+          def change(path, before, after, label):
+              content = path.read_text(encoding='utf-8-sig')
+              matches = content.count(before)
+              if matches != 1:
+                  raise RuntimeError(f'{label}: expected 1 occurrence, got {matches}, in {path}')
+              path.write_text(content.replace(before, after, 1), encoding='utf-8')
+              print('OK:', label)
+
+          change(root/'OpenUtauMobile.csproj',
+                 '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v10</ApplicationId>',
+                 '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v11</ApplicationId>',
+                 'Independent Touch 11 Android package')
+          change(root/'OpenUtauMobile.csproj',
+                 '<ApplicationTitle>OpenUtau Touch 10</ApplicationTitle>',
+                 '<ApplicationTitle>OpenUtau Touch 11</ApplicationTitle>',
+                 'Touch 11 app title')
+          change(root/'Platforms/Android/AndroidManifest.xml',
+                 'android:label="OpenUtau Touch 10"',
+                 'android:label="OpenUtau Touch 11"',
+                 'Touch 11 launcher label')
+          provider = root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs'
+          change(provider,
+                 'pers.vocoder712.openutaumobile.touchmarquee.v10.documents',
+                 'pers.vocoder712.openutaumobile.touchmarquee.v11.documents',
+                 'Touch 11 independent provider')
+          change(provider,
+                 'ColumnTitle, "OpenUtau Touch 10"',
+                 'ColumnTitle, "OpenUtau Touch 11"',
+                 'Touch 11 provider label')
+
+          xaml = root/'Views/EditPage.xaml'
+          change(xaml,
+                 'Text="Touch 10 diagnosing…" TextColor="White"',
+                 'Text="Touch 11 frame pacing…" TextColor="White"',
+                 'Touch 11 visible diagnostic heading')
+
+          edit = root/'Views/EditPage.xaml.cs'
+
+          # Guard against competing redraw schedules: the Touch 8 Rx Sample subscription
+          # otherwise invalidates five Skia canvases while Touch 10's Choreographer
+          # independently invalidates two of them, creating bursts of main-thread work.
+          change(edit,
+                 '''                System.Threading.Interlocked.Increment(ref _touch9SampleRequests);
+                          PianoRollCanvas.InvalidateSurface();''',
+                 '''                System.Threading.Interlocked.Increment(ref _touch9SampleRequests);
+          #if ANDROID
+                          if (_touch10DriveEnabled && _touch10LoopRunning)
+                          {
+                              // Defer canvas refresh to the next Android frame callback.
+                              // This avoids a second, competing invalidation cadence.
+                              _touch11Dirty = true;
+                              return;
+                          }
+          #endif
+                          PianoRollCanvas.InvalidateSurface();''',
+                 'De-duplicate Rx Sample and Choreographer redraws')
+
+          change(edit,
+                 '''    private bool _touch10DriveEnabled = false; // default OFF; can be reverted instantly''',
+                 '''    private bool _touch10DriveEnabled = false; // OFF preserves the previous behavior
+              private int _touch11Mode; // 0=OFF, 1=stable 60Hz, 2=high 120Hz
+              private bool _touch11Dirty;
+              private long _touch11LastDrivenFrameNs;
+              private long _touch11LastVsyncNs;
+              private int _touch11MissedVsyncGaps;''',
+                 'Touch 11 adaptive frame cadence and stutter diagnostics')
+
+          # Touch10 only uses pressed/moved to start the native frame loop; track redraw
+          # requests now follow actual touch deltas instead of every VSYNC when held still.
+          change(edit,
+                 '''            _touch10FingerDown = true;
+                      _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                      Touch10StartFrameLoop();''',
+                 '''            _touch10FingerDown = true;
+                      _touch11Dirty = true;
+                      _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                      Touch10StartFrameLoop();''',
+                 'Only mark drawing dirty on new touch updates')
+
+          # A frame callback is always scheduled on the Android main Looper. It is *not*
+          # evidence of a presented frame. Repaint once at the selected cadence and
+          # only when there is new pan/zoom/gesture state (or inertia just advanced).
+          change(edit,
+                 '''    private void Touch10OnFrame(long frameTimeNanos)
+              {
+                  if (!_touch10LoopRunning || _touch10Disposed) return;
+                  System.Threading.Interlocked.Increment(ref _touch10VsyncCallbacks);
+                  bool animating = (_pianoMomentum?.IsAnimating == true) || (_trackMomentum?.IsAnimating == true);
+                  // All callbacks happen on the UI thread. Never block waiting for a render.
+                  if (_touch10DriveEnabled)
+                  {
+                      _pianoMomentum?.Pulse();
+                      _trackMomentum?.Pulse();
+                      // Experimental comparison: does Skia really execute a draw for each
+                      // Android frame when explicitly invalidated during a finger gesture?
+                      if (_touch10FingerDown)
+                      {
+                          System.Threading.Interlocked.Increment(ref _touch10DrivenRequests);
+                          PianoRollCanvas.InvalidateSurface();
+                          PianoRollTickBackgroundCanvas.InvalidateSurface();
+                      }
+                  }
+                  long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                  bool recentlyTouched = (now - _touch10LastTouchStamp) < System.Diagnostics.Stopwatch.Frequency * 3 / 2;
+                  if (!_touch10FingerDown && !_viewModel.Playing && !animating && !recentlyTouched)
+                  {
+                      _touch10LoopRunning = false; // frame callbacks are one-shot
+                      return;
+                  }
+                  _touch10Choreographer?.PostFrameCallback(_touch10Callback);
+              }''',
+                 '''    private void Touch10OnFrame(long frameTimeNanos)
+              {
+                  if (!_touch10LoopRunning || _touch10Disposed) return;
+                  System.Threading.Interlocked.Increment(ref _touch10VsyncCallbacks);
+
+                  // Detect unusually long pauses *between Android frame callbacks*.
+                  // This measures pacing jitter, not the number of frames presented.
+                  if (_touch11LastVsyncNs > 0 && frameTimeNanos > _touch11LastVsyncNs &&
+                      frameTimeNanos - _touch11LastVsyncNs > 25_000_000L)
+                      System.Threading.Interlocked.Increment(ref _touch11MissedVsyncGaps);
+                  _touch11LastVsyncNs = frameTimeNanos;
+
+                  bool pianoAnimating = _pianoMomentum?.IsAnimating == true;
+                  bool trackAnimating = _trackMomentum?.IsAnimating == true;
+                  bool animating = pianoAnimating || trackAnimating;
+                  if (_touch10DriveEnabled)
+                  {
+                      // Stable mode renders every ~16.7ms on a 120Hz display; high mode
+                      // permits every VSYNC (~8.3ms). No additional busy-loop timer.
+                      long minimumIntervalNs = _touch11Mode == 1 ? 15_800_000L : 0L;
+                      bool frameDue = _touch11LastDrivenFrameNs == 0 ||
+                          frameTimeNanos - _touch11LastDrivenFrameNs >= minimumIntervalNs;
+                      if (frameDue)
+                      {
+                          if (pianoAnimating)
+                          {
+                              _pianoMomentum?.Pulse();
+                              _touch11Dirty = true;
+                          }
+                          if (trackAnimating)
+                              _trackMomentum?.Pulse();
+                          if (_touch11Dirty)
+                          {
+                              _touch11Dirty = false;
+                              _touch11LastDrivenFrameNs = frameTimeNanos;
+                              System.Threading.Interlocked.Increment(ref _touch10DrivenRequests);
+                              // One cohesive refresh batch. Idle fingers no longer cause
+                              // continual redraws of identical pictures.
+                              PianoRollCanvas.InvalidateSurface();
+                              PianoRollTickBackgroundCanvas.InvalidateSurface();
+                              PianoRollPlayheadCanvas.InvalidateSurface();
+                              PianoRollPitchCanvas.InvalidateSurface();
+                              PhonemeCanvas.InvalidateSurface();
+                              ExpressionCanvas.InvalidateSurface();
+                          }
+                      }
+                  }
+                  long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                  bool recentlyTouched = (now - _touch10LastTouchStamp) < System.Diagnostics.Stopwatch.Frequency * 3 / 2;
+                  if (!_touch10FingerDown && !_viewModel.Playing && !animating && !recentlyTouched)
+                  {
+                      _touch10LoopRunning = false;
+                      _touch11LastVsyncNs = 0;
+                      return;
+                  }
+                  _touch10Choreographer?.PostFrameCallback(_touch10Callback);
+              }''',
+                 'Coalesce paint requests and pace 60/120Hz inertia from VSYNC')
+
+          # The user can compare the previous OFF behavior, a lower-load 60Hz mode and
+          # experimental 120Hz without rebuilding or modifying any project file.
+          change(edit,
+                 '''    private void Touch10DriveButton_Clicked(object sender, EventArgs e)
+              {
+                  _touch10DriveEnabled = !_touch10DriveEnabled;
+                  _pianoMomentum?.Stop();
+                  _trackMomentum?.Stop();
+                  if (_pianoMomentum != null) _pianoMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  if (_trackMomentum != null) _trackMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  Touch10DriveButton.Text = _touch10DriveEnabled ? "帧驱动：开" : "帧驱动：关";
+          #if ANDROID
+                  _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                  Touch10StartFrameLoop();
+          #endif
+              }''',
+                 '''    private void Touch10DriveButton_Clicked(object sender, EventArgs e)
+              {
+                  _touch11Mode = (_touch11Mode + 1) % 3;
+                  _touch10DriveEnabled = _touch11Mode != 0;
+                  _touch11LastDrivenFrameNs = 0;
+                  _touch11Dirty = true;
+                  _pianoMomentum?.Stop();
+                  _trackMomentum?.Stop();
+                  if (_pianoMomentum != null) _pianoMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  if (_trackMomentum != null) _trackMomentum.ExternalFrameDrive = _touch10DriveEnabled;
+                  Touch10DriveButton.Text = _touch11Mode switch
+                  {
+                      1 => "帧驱动：稳60",
+                      2 => "帧驱动：高120",
+                      _ => "帧驱动：关",
+                  };
+                  // The old 120Hz playback timer alone can monopolize the UI thread.
+                  // In stable mode reduce its work; high mode retains the old target.
+                  PlaybackTimer.Stop();
+                  PlaybackTimer.Interval = TimeSpan.FromSeconds(1.0 / (_touch11Mode == 1 ? 60.0 : 120.0));
+                  PlaybackTimer.Start();
+          #if ANDROID
+                  _touch10LastTouchStamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                  Touch10StartFrameLoop();
+          #endif
+              }''',
+                 'Make OFF / stable60 / high120 selectable without a rebuild')
+
+          change(edit,
+                 '''            Touch9DiagLabel.Text += $"\\nVSYNC {vsync}/s   Drive {drive}/s   {(_touch10DriveEnabled ? "ON" : "OFF")}";''',
+                 '''            int vsyncGaps = System.Threading.Interlocked.Exchange(ref _touch11MissedVsyncGaps, 0);
+                      string driveMode = _touch11Mode switch { 1 => "60", 2 => "120", _ => "OFF" };
+                      Touch9DiagLabel.Text += $"\\nVSYNC {vsync}/s   Drive {drive}/s   Mode {driveMode}   Gaps {vsyncGaps}";''',
+                 'Show real VSYNC callback gaps beside rendered canvas rates')
+
+          # After coalescing, the old Req counter measures incoming sample callbacks,
+          # not necessarily paint requests. Rename it so the diagnostic remains accurate.
+          change(edit,
+                 'Touch {touch}/s   Req {req}/s   Tick {tick}/s',
+                 'Touch {touch}/s   Sample {req}/s   Tick {tick}/s',
+                 'Name the input sample counter accurately after coalescing')
+
+          # Touch 10 already disposes native callbacks and keeps its legacy paint paths
+          # when driving is off. The tiny Touch 11 patch does not touch USTX storage.
+          assert 'touchmarquee.v11.documents' in provider.read_text(encoding='utf-8-sig')
+          assert 'Touch10DriveButton' in xaml.read_text(encoding='utf-8-sig')
+          cs = edit.read_text(encoding='utf-8-sig')
+          assert cs.count('private void Touch10OnFrame(') == 1
+          assert 'Touch9DiagLabel.Text +=' in cs and 'Gaps {vsyncGaps}' in cs
+          assert 'PianoRollPlayheadCanvas.InvalidateSurface();' in cs
+          assert 'if (_touch10DriveEnabled && _touch10LoopRunning)' in cs
+          assert '_touch11Mode = (_touch11Mode + 1) % 3' in cs
+          print('Touch 11 experimental frame pacing patch installed; measure actual rates on device.')
+          PYTOUCH11
+      - name: Touch 12 - heavy project rendering (assert correction)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYTOUCH12'
+          from pathlib import Path
+          import re
+
+          root=Path('OpenUtauMobile')
+
+          def change(path,before,after,label):
+              s=path.read_text(encoding='utf-8-sig')
+              n=s.count(before)
+              if n!=1:
+                  raise RuntimeError(f'{label}: expected 1 occurrence, got {n} in {path}')
+              path.write_text(s.replace(before,after,1),encoding='utf-8')
+              print('OK:',label)
+
+          def multi(path,before,after,n,label):
+              s=path.read_text(encoding='utf-8-sig')
+              if s.count(before)!=n:
+                  raise RuntimeError(f'{label}: expected {n} occurrences, got {s.count(before)} in {path}')
+              path.write_text(s.replace(before,after),encoding='utf-8')
+              print('OK:',label)
+
+          change(root/'OpenUtauMobile.csproj',
+              '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v11</ApplicationId>',
+              '<ApplicationId>pers.vocoder712.openutaumobile.touchmarquee.v12</ApplicationId>',
+              'Independent Touch12 package')
+          change(root/'OpenUtauMobile.csproj',
+              '<ApplicationTitle>OpenUtau Touch 11</ApplicationTitle>',
+              '<ApplicationTitle>OpenUtau Touch 12</ApplicationTitle>',
+              'Touch12 title')
+          change(root/'Platforms/Android/AndroidManifest.xml',
+              'android:label="OpenUtau Touch 11"',
+              'android:label="OpenUtau Touch 12"',
+              'Touch12 launcher')
+          provider=root/'Platforms/Android/Utils/Providers/DataRootDocumentsProvider.cs'
+          change(provider,
+              'pers.vocoder712.openutaumobile.touchmarquee.v11.documents',
+              'pers.vocoder712.openutaumobile.touchmarquee.v12.documents',
+              'Touch12 isolated provider')
+          change(provider,
+              'ColumnTitle, "OpenUtau Touch 11"',
+              'ColumnTitle, "OpenUtau Touch 12"',
+              'Touch12 provider label')
+
+          # Reuse a single visible-note list for both rectangular note bodies and lyric passes.
+          # Keep the original painting order: first every rectangle, then all lyrics.
+          notes=root/'Views/DrawableObjects/DrawableNotes.cs'
+          change(notes,'using System;\nnamespace OpenUtauMobile.Views.DrawableObjects',
+              'using System;\nusing System.Collections.Generic;\nnamespace OpenUtauMobile.Views.DrawableObjects',
+              'Visible-note list import')
+          change(notes,
+              '''        private int RightTick { get; set; }
+          ''',
+              '''        private int RightTick { get; set; }
+                  // Reuse the same viewport subset for note rectangles and lyrics.
+                  private readonly List<UNote> _visibleNotes = new();
+          ''',
+              'Reusable visible-note list')
+          change(notes,
+              '''        public void Draw()
+                  {
+                      DrawRectangle();
+                      DrawLyrics();
+                  }
+          ''',
+              '''        public void Draw()
+                  {
+                      _visibleNotes.Clear();
+                      foreach (UNote note in Part.notes)
+                      {
+                          int start = (int)(PositionX + note.position);
+                          if (start + note.duration < LeftTick) continue;
+                          // Original note collection is sorted by position.
+                          if (start > RightTick) break;
+                          _visibleNotes.Add(note);
+                      }
+                      DrawRectangle();
+                      DrawLyrics();
+                  }
+          ''',
+              'Compute viewport-visible notes only once per frame')
+          # Both original paint passes contain identical range checks, but noteStart
+          # still needs to be available for lyric positions.
+          needle='''            foreach (UNote note in Part.notes)
+                      {
+                          // 计算音符的绝对位置
+                          int noteStart = (int)(PositionX + note.position);
+                          int noteEnd = noteStart + note.duration;
+
+                          // 跳过左侧不可见的音符
+                          if (noteEnd < LeftTick)
+                          {
+                              continue;
+                          }
+
+                          // 跳过右侧不可见的音符 notes按position排序
+                          if (noteStart > RightTick)
+                          {
+                              break;
+                          }
+          '''
+          replacement='''            foreach (UNote note in _visibleNotes)
+                      {
+                          int noteStart = (int)(PositionX + note.position);
+          '''
+          multi(notes,needle,replacement,2,'Replace duplicate full-list note loops with viewport list')
+          change(notes,
+              '''            SKPaint paint = new()
+                      {
+                          Color = NotesColor,
+                      };
+                      SKPaint selectedNotePaint = new()''',
+              '''            using SKPaint paint = new()
+                      {
+                          Color = NotesColor,
+                      };
+                      using SKPaint selectedNotePaint = new()''',
+              'Dispose native note drawing paints')
+          # Keep existing Touch 2 selected-note glow painting intact.
+          # Match locally, without requiring a precise whitespace sequence after the loop header.
+          change(notes,
+              '            using SKPaint selectedNotePaint = new()\n            {',
+              '''            // Build a lookup once per draw for large marquee selections.
+                      HashSet<UNote>? selectedLookup = ViewModel.SelectedNotes.Count > 8
+                          ? new HashSet<UNote>(ViewModel.SelectedNotes) : null;
+                      using SKPaint selectedNotePaint = new()
+                      {''',
+              'Create selected-note lookup in rectangle drawing pass')
+          change(notes,
+              '''                // 如果是错误音符，颜色增加透明度
+                          if (note.Error)
+                          {
+                              paint.Color = paint.Color.WithAlpha(100);
+                          }
+                          // 绘制边框
+                          if (ViewModel.SelectedNotes.Contains(note))''',
+              '''                // Reset color every time: an error note must not fade later notes.
+                          paint.Color = note.Error ? NotesColor.WithAlpha(100) : NotesColor;
+                          float noteTop = (ViewConstants.TotalPianoKeys - note.tone - 1)
+                              * HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY + ViewModel.PianoRollTransformer.PanY;
+                          float noteHeight = HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY;
+                          if (noteTop + noteHeight < 0 || noteTop > Canvas.DeviceClipBounds.Height)
+                              continue;
+                          // 绘制边框
+                          if (selectedLookup?.Contains(note) ?? ViewModel.SelectedNotes.Contains(note))''',
+              'Cull offscreen pitches and accelerate marquee selection lookup')
+          change(notes,'''                SKPaint handlePaint = new()''','''                using SKPaint handlePaint = new()''','Dispose handle brush')
+          change(notes,'''                SKPaint trianglePaint = new()''','''                using SKPaint trianglePaint = new()''','Dispose handle triangle brush')
+          change(notes,'''                    SKPath trianglePath = new();''','''                    using SKPath trianglePath = new();''','Dispose selected handle paths')
+          # Most call sites use Draw(), which now computes the viewport subset once.
+          # The lyric canvas remains on top of all note rectangles, unchanged.
+
+          change(notes,
+              '''                float y = (ViewConstants.TotalPianoKeys - note.tone - 1.5f) * HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY + ViewModel.PianoRollTransformer.PanY;
+                          // 绘制歌词''',
+              '''                float y = (ViewConstants.TotalPianoKeys - note.tone - 1.5f) * HeightPerPianoKey * ViewModel.PianoRollTransformer.ZoomY + ViewModel.PianoRollTransformer.PanY;
+                          // Skip expensive glyph rasterization outside visible piano pitches.
+                          if (y < -30 * ViewModel.Density || y > Canvas.DeviceClipBounds.Height + 30 * ViewModel.Density)
+                              continue;
+                          // 绘制歌词''',
+              'Cull lyrics too far above or below the visible piano roll')
+
+          # Avoid Skia native allocations not released in the music editor's hot path.
+          edit=root/'Views/EditPage.xaml.cs'
+          # Large projects may have thousands of phonemes preceding the visible viewport.
+          # Do the cheap tick-based right-edge rejection before costly Ms->Tick conversion.
+          change(edit,
+                 """            double leftBound = project.timeAxis.MsPosToTickPos(phoneme.PositionMs - phoneme.preutter);
+                      double rightBound = phoneme.End + part.position;
+                      if (leftBound > rightTick || rightBound < leftTick || phoneme.Parent.OverlapError)
+                      {
+                          continue;
+                      }""",
+                 """            double rightBound = phoneme.End + part.position;
+                      if (rightBound < leftTick || phoneme.Parent.OverlapError)
+                          continue;
+                      double leftBound = project.timeAxis.MsPosToTickPos(phoneme.PositionMs - phoneme.preutter);
+                      if (leftBound > rightTick)
+                          continue;""",
+                 'Skip offscreen preceding phonemes before Ms-to-tick conversion')
+
+          change(edit,
+                 '''        SKPaint phonemePaint = new()
+                  {''',
+                 '''        using SKPaint phonemePaint = new()
+                  {''',
+                 'Dispose phoneme outline brush')
+          change(edit,
+                 '''        SKPaint posLinePaint = new()
+                  {''',
+                 '''        using SKPaint posLinePaint = new()
+                  {''',
+                 'Dispose phoneme vertical-line brush')
+          change(edit,
+                 '''        SKFont textFont = new(ObjectProvider.NotoSansCJKscRegularTypeface, 12 * (float)_viewModel.Density);
+                  // 遍历音素''',
+                 '''        using SKFont textFont = new(ObjectProvider.NotoSansCJKscRegularTypeface, 12 * (float)_viewModel.Density);
+                  // Reuse one native path for all visible phoneme envelopes.
+                  using SKPath phonemePath = new();
+                  // 遍历音素''',
+                 'Reuse phoneme envelope path')
+          change(edit,
+                 '''                SKPath path = new();
+                          path.MoveTo(point0);
+                          path.LineTo(point1);
+                          //path.LineTo(point2);
+                          path.LineTo(point3);
+                          path.LineTo(point4);
+                          path.Close();''',
+                 '''                phonemePath.Rewind();
+                          phonemePath.MoveTo(point0);
+                          phonemePath.LineTo(point1);
+                          //path.LineTo(point2);
+                          phonemePath.LineTo(point3);
+                          phonemePath.LineTo(point4);
+                          phonemePath.Close();''',
+                 'Reset and reuse SKPath instead of allocating per phoneme')
+          change(edit,'canvas.DrawPath(path, phonemePaint);','canvas.DrawPath(phonemePath, phonemePaint);',
+                 'Use shared phoneme path')
+          change(edit,
+                 '''        SKPaint paint = new SKPaint
+                  {
+                      Style = SKPaintStyle.Fill,
+                      Color = ThemeColorsManager.Current.BlackPianoRollBackground,''',
+                 '''        using SKPaint paint = new SKPaint
+                  {
+                      Style = SKPaintStyle.Fill,
+                      Color = ThemeColorsManager.Current.BlackPianoRollBackground,''',
+                 'Dispose piano key background brush')
+          change(edit,
+                 '''            SKPaint centerPaint = new()
+                      {
+                          Color = SKColors.Yellow,''',
+                 '''            using SKPaint centerPaint = new()
+                      {
+                          Color = SKColors.Yellow,''',
+                 'Dispose pitch editing center paint')
+
+          # The original tick/grid painter allocates native handles for every redraw.
+          ticks=root/'Views/DrawableObjects/DrawablePianoRollTickBackground.cs'
+          change(ticks,'            SKPaint barTextPaint = new()', '            using SKPaint barTextPaint = new()',
+                 'Dispose timeline text brush')
+          change(ticks,'            SKFont font = new(typeface, size: 30f);','            using SKFont font = new(typeface, size: 30f);',
+                 'Dispose timeline text font')
+          change(ticks,'            SKPaint shadowPaint = new()','            using SKPaint shadowPaint = new()',
+                 'Dispose piano roll outside-part shading brush')
+
+          # Piano-key text and paint: native handles are likewise recreated each update.
+          keys=root/'Views/DrawableObjects/DrawablePianoKeys.cs'
+          change(keys,'            SKPaint paint = new SKPaint','            using SKPaint paint = new SKPaint',
+                 'Dispose piano-key fill brush')
+          change(keys,'            SKPaint textPaint = new();','            using SKPaint textPaint = new();',
+                 'Dispose piano-key name brush')
+
+          n=notes.read_text(encoding='utf-8-sig'); cs=edit.read_text(encoding='utf-8-sig')
+          assert n.count('foreach (UNote note in _visibleNotes)') == 2
+          # Two full-list scans are intentional: viewport filtering and hit-testing.
+          # Rectangle and lyric render passes each use the optimized visible-note list.
+          assert n.count('foreach (UNote note in Part.notes)') == 2, (
+              'Expected one viewport prefilter plus one IsPointInNote hit-test traversal')
+          assert 'public UNote? IsPointInNote(SKPoint point)' in n
+          assert 'phonemePath.Rewind();' in cs
+          assert 'canvas.DrawPath(phonemePath, phonemePaint);' in cs
+          assert 'touchmarquee.v12.documents' in provider.read_text(encoding='utf-8-sig')
+          print('Touch12 scene optimization patch completed without changing song data or audio synthesis.')
+          PYTOUCH12
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      # GitHub hosted Ubuntu runner already includes Android SDK.
+      # Avoid setup-android@v3, which tried to interactively accept unused Google TV SDK licenses.
+      - name: Use preinstalled Android SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          test -d "$SDK_ROOT" || { echo "::error::Android SDK directory not found: $SDK_ROOT"; exit 1; }
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "Using Android SDK at $SDK_ROOT"
+          ls "$SDK_ROOT/build-tools" || true
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+      - name: Build signed standalone ARM64 APK
+        run: >-
+          dotnet publish OpenUtauMobile/OpenUtauMobile.csproj
+          -f net9.0-android -c Release
+          -p:TargetFrameworks=net9.0-android
+          -p:RuntimeIdentifier=android-arm64
+          -p:RuntimeIdentifiers=android-arm64
+          -p:AndroidCreatePackagePerAbi=false
+          -p:AndroidPackageFormats=apk
+          -p:AndroidKeyStore=false
+          -p:RunAOTCompilation=false
+          -p:EmbedAssembliesIntoApk=true
+          -bl:touch-build.binlog
+      - name: Verify package and signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=$(find OpenUtauMobile/bin/Release -name '*-Signed.apk' -print -quit)
+          if [[ -z "$APK" ]]; then
+            echo '::error::Signed APK not found in Release output'
+            exit 1
+          fi
+          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$APK" | tee signature.txt
+          "$BUILD_TOOLS/aapt" dump badging "$APK" | tee package.txt
+          "$BUILD_TOOLS/aapt" dump xmltree "$APK" AndroidManifest.xml > manifest-tree.txt
+
+          # Only check Touch 11's identity. The previous Touch 1 authority check
+          # was mistakenly left in the old workflow and caused exit code 1.
+          grep -Fq "package: name='pers.vocoder712.openutaumobile.touchmarquee.v12'" package.txt || {
+            echo '::error::Touch 11 package name mismatch'; exit 1;
+          }
+          grep -Fq "application-label:'OpenUtau Touch 12'" package.txt || {
+            echo '::error::Touch 11 application label mismatch'; exit 1;
+          }
+          grep -Eq "native-code:.*'arm64-v8a'" package.txt || {
+            echo '::error::Expected ARM64 native libraries not found'; exit 1;
+          }
+          grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v12.documents' manifest-tree.txt || {
+            echo '::error::Touch 11 DocumentsProvider authority not found'; exit 1;
+          }
+          if grep -Fq 'pers.vocoder712.openutaumobile.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v2.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v3.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v4.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v5.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v6.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v7.documents' manifest-tree.txt || \
+             grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v8.documents' manifest-tree.txt || \
+              grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v9.documents' manifest-tree.txt || \
+              grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v10.documents' manifest-tree.txt || \
+              grep -Fq 'pers.vocoder712.openutaumobile.touchmarquee.v11.documents' manifest-tree.txt; then
+            echo '::error::An original or older Touch DocumentsProvider authority remains'
+            exit 1
+          fi
+          echo 'All APK identity and coexistence checks passed.'
+          mkdir -p artifacts
+          cp "$APK" artifacts/OpenUtau-Touch-12-Heavy-Project-ARM64.apk
+          cp signature.txt package.txt manifest-tree.txt artifacts/
+          sha256sum artifacts/*.apk > artifacts/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenUtau-Touch-12-Heavy-Project-ARM64
+          path: artifacts/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: touch-build-diagnostics
+          path: touch-build.binlog
